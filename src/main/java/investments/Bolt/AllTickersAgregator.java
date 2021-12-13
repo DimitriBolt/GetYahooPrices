@@ -31,7 +31,7 @@ public class AllTickersAgregator {
 				System.out.println(ex);
 				System.out.printf("Тиккер %s прислал, но отказ.\n-------------------\n\n", ticker);
 			}
-			System.out.printf("Тиккер %7s, скачан и рас-parce-ен\t № %4d\r", ticker, iTickers++);
+			System.out.printf("Тиккер %7s, скачан и рас-parse'ен\t № %4d\r", ticker, iTickers++);
 		}
 
 	}// End of constructors
