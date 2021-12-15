@@ -29,8 +29,8 @@
 	</dependencies>
 
 	<properties>
-		<maven.compiler.source>16</maven.compiler.source>
-		<maven.compiler.target>16</maven.compiler.target>
+		<maven.compiler.source>15</maven.compiler.source>
+		<maven.compiler.target>15</maven.compiler.target>
 	</properties>
 
 	<build>
@@ -41,7 +41,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<release>16</release> <!-- <release>13/14/15</release> -->
+					<release>15</release> <!-- <release>13/14/15</release> -->
 					<compilerArgs>--enable-preview</compilerArgs>
 				</configuration>
 			</plugin>
