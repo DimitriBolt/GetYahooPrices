@@ -64,7 +64,7 @@ public class GetYahooPrices {
 						// TODO Сформировать начало строки.
 						long startStringComposing = System.nanoTime();
 						String sqlCommand = String.format(Locale.US,
-								"INSERT localcrypto.prices(ticker, dealTime, volume, openPrice, high, low, closePrice) VALUES ('%1$s', %2$d, %3$s, %4$s, %5$s, %6$s, %7$s)",
+								"INSERT GetYahooPrices.prices(ticker, dealTime, volume, openPrice, high, low, closePrice) VALUES ('%1$s', %2$d, %3$s, %4$s, %5$s, %6$s, %7$s)",
 								entry.getKey(), // Текстовое значение тиккера. Остальные поля - численные.
 								entry.getValue().getTimeStampJsonArray().get(0).getAsInt(),
 								entry.getValue().getVolumeJsonArray().get(0),
