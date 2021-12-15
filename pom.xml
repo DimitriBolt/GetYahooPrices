@@ -42,7 +42,9 @@
 				<version>3.8.0</version>
 				<configuration>
 					<release>15</release> <!-- <release>13/14/15</release> -->
-					<compilerArgs>--enable-preview</compilerArgs>
+					<!--
+					<compilerArgs>- -enable-preview</compilerArgs>
+					-->
 				</configuration>
 			</plugin>
 			<!-- -->
