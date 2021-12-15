@@ -55,6 +55,13 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
+
+					<archive>
+						<manifest>
+							<mainClass>investments.Bolt.GetYahooPrices</mainClass>
+						</manifest>
+					</archive>
+
 				</configuration>
 
 				<executions>
