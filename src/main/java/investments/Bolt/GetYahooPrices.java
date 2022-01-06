@@ -17,10 +17,14 @@ public class GetYahooPrices {
 	public static void main(String[] args) throws IOException {
 
 		// tickerChooser хранит в себе список tickers.
-
-		String userHomePath = System.getProperty("user.home");
 		// https://www.nasdaq.com/market-activity/stocks/screener
-		File iFile = new File(userHomePath, "/Downloads/pricing/ifile.txt"); // TODO нужно снести в параметры запуска
+		File iFile;
+		if (args.length != 0) {
+			iFile = new File(args[0]);
+		} else {
+			String userHomePath = System.getProperty("user.home");
+			iFile = new File(userHomePath, "/Downloads/pricing/ifile.txt");
+		}
 
 		TickerChooser tickerChooser;
 		tickerChooser = new TickerChooser(iFile);
@@ -46,7 +50,8 @@ public class GetYahooPrices {
 			DBCredentials dbCredentials = new DBCredentials(iniFile);
 			String mysqlUrlConnection = dbCredentials.getMySqlUrlConnection();
 			try (Connection conn = DriverManager.getConnection(mysqlUrlConnection);
-										BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(userHomePath + "/Documents/DurationAnalisys1BigInsert.csv"))) {
+					BufferedWriter bufferedWriter = new BufferedWriter(
+							new FileWriter(userHomePath + "/Documents/DurationAnalisys1BigInsert.csv"))) {
 				// https://www.examclouds.com/ru/java/java-core-russian/try-with-resources
 				bufferedWriter.write("Tikker" + "," // Записываем Заголовок таблицы в файл для анализа времени INSERT.
 						+ "String sqlCommand = String.format(INSERT localcrypto.prices(ticker ... " + ","
@@ -64,7 +69,7 @@ public class GetYahooPrices {
 						// TODO Сформировать начало строки.
 						long startStringComposing = System.nanoTime();
 						String sqlCommand = String.format(Locale.US,
-								"INSERT GetYahooPrices.prices(ticker, dealTime, volume, openPrice, high, low, closePrice) VALUES ('%1$s', %2$d, %3$s, %4$s, %5$s, %6$s, %7$s)",
+								"INSERT prices(ticker, dealTime, volume, openPrice, high, low, closePrice) VALUES ('%1$s', %2$d, %3$s, %4$s, %5$s, %6$s, %7$s)",
 								entry.getKey(), // Текстовое значение тиккера. Остальные поля - численные.
 								entry.getValue().getTimeStampJsonArray().get(0).getAsInt(),
 								entry.getValue().getVolumeJsonArray().get(0),
@@ -91,11 +96,11 @@ public class GetYahooPrices {
 						statement.executeUpdate(sqlCommand);
 						durationSqlInsert = System.nanoTime() - startSqlInsert;
 
-						String stringForAnalisys = entry.getKey() + "," // Строка файла /Documents/DurationAnalisys1BigInsert.csv для анализа скорости записи в БД.
-								+ durationStringComposung + "," //
+						String stringForAnalisys = entry.getKey() + ";" // Строка файла /Documents/DurationAnalisys1BigInsert.csv 
+								+ durationStringComposung + ";" 		// для анализа скорости записи в БД.
 								+ durationSqlInsert + "\n";
 						bufferedWriter.write(stringForAnalisys);
-						
+
 					} catch (NullPointerException ex) {
 						System.out.printf("\nТиккер %7s не имеет TimeStamp !!!!!!!!!!!!!!!!!\n", entry.getKey());
 					}

@@ -9,15 +9,15 @@ import com.google.gson.JsonElement;
 public class OneTickerFetcher {
 
 	// Class variables
-	private static final String YAHOO_QUOTE_URL_FMT = "https://query2.finance.yahoo.com/v8/finance/chart/%s?interval=1h&range=2y&includeTimestamps=true";
+	private static final String YAHOO_QUOTE_URL_FMT = "https://query2.finance.yahoo.com/v8/finance/chart/%s?interval=%s&range=1y&includeTimestamps=true";
 	private JsonElement jsonElement;
 	private String strJsonUrl;
 
 	// Initializer block
 	// Constructors
-	public OneTickerFetcher(String ticker) throws IOException {
+	public OneTickerFetcher(String ticker, String frequency) throws IOException {
 		// https://stackoverflow.com/questions/44030983/yahoo-finance-url-not-working/47505102#47505102
-		String strJsonUrl = String.format(YAHOO_QUOTE_URL_FMT, ticker);
+		String strJsonUrl = String.format(YAHOO_QUOTE_URL_FMT, ticker, frequency);
 		this.strJsonUrl = strJsonUrl;
 		JsonFromUrl jsonFromUrl = new JsonFromUrl(strJsonUrl);
 		JsonElement jsonElement = jsonFromUrl.getJsonElement();
@@ -33,6 +33,7 @@ public class OneTickerFetcher {
 	}
 
 	public String getStrJsonUrl() {
+		// Только для анализа исключения ClassCastException
 		return strJsonUrl;
 	}
 

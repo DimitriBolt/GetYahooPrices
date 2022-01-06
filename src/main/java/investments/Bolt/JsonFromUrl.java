@@ -45,6 +45,9 @@ class JsonFromUrl {
 //			this.json = (jsonObject.has("response")) ? jsonObject.get("response").toString() : "[]"; //?
 				this.jsonElement = jsonElement;
 			}
+		// TODO Сделать реальную обработку исключения 
+			// javax.net.ssl.SSLException: Программа на вашем хост-компьютере разорвала установленное подключение
+			//
 		} finally {
 			connection.disconnect();
 		}
