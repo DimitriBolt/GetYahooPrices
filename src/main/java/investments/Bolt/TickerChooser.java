@@ -57,11 +57,11 @@ public class TickerChooser {
 			System.out.println(ex.getMessage());
 		}
 
-		this.iFile = "THNK.V";
+//		this.iFile = "THNK.V";
 
 //		tickers.add("CL=F");
 		tickers.add("TSLA");
-		tickers.add(this.iFile);
+//		tickers.add(this.iFile);
 	}
 
 	// Accessor Methods
