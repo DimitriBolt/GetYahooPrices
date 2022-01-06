@@ -18,7 +18,7 @@ public class TickerChooser {
 	// Initializer block
 	{
 		tickers.add("%5EDJI");
-		tickers.add("GC=F");
+//		tickers.add("GC=F");
 	}
 
 	// Create a class constructors for the TickerChooser class
@@ -59,7 +59,7 @@ public class TickerChooser {
 
 		this.iFile = "THNK.V";
 
-		tickers.add("CL=F");
+//		tickers.add("CL=F");
 		tickers.add("TSLA");
 		tickers.add(this.iFile);
 	}
