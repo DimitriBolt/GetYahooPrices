@@ -20,9 +20,10 @@ class DBCredentials {
 	// static Class variables
 	// private Instance variable
 	private String mySqlUrlConnection;
-	// Initializer block
+	// Initialiser block
 	// Constructors
 	DBCredentials(File iniFile) throws InvalidFileFormatException, IOException {
+		// TODO нужно использовать .properties https://metanit.com/java/database/1.1.php
 		Wini ini = new Wini(iniFile);
 		this.mySqlUrlConnection = ini.get("localTestDB", "mySqlUrlConnection");
 	}

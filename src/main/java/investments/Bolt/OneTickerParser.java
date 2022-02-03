@@ -31,7 +31,7 @@ class OneTickerParser {
 		highJsonArray			= jsonElement.getAsJsonObject().getAsJsonObject("chart").getAsJsonArray("result").get(0).getAsJsonObject().getAsJsonObject("indicators").getAsJsonArray("quote").get(0).getAsJsonObject().getAsJsonArray("high");
 		lowJsonArray			= jsonElement.getAsJsonObject().getAsJsonObject("chart").getAsJsonArray("result").get(0).getAsJsonObject().getAsJsonObject("indicators").getAsJsonArray("quote").get(0).getAsJsonObject().getAsJsonArray("low");
 		closeJsonArray			= jsonElement.getAsJsonObject().getAsJsonObject("chart").getAsJsonArray("result").get(0).getAsJsonObject().getAsJsonObject("indicators").getAsJsonArray("quote").get(0).getAsJsonObject().getAsJsonArray("close");
-		adjCloseJsonArray		= jsonElement.getAsJsonObject().getAsJsonObject("chart").getAsJsonArray("result").get(0).getAsJsonObject().getAsJsonObject("indicators").getAsJsonArray("quote").get(0).getAsJsonObject().getAsJsonArray("adjClose");
+		adjCloseJsonArray       = jsonElement.getAsJsonObject().getAsJsonObject("chart").getAsJsonArray("result").get(0).getAsJsonObject().getAsJsonObject("indicators").getAsJsonArray("adjclose").get(0).getAsJsonObject().getAsJsonArray("adjclose");
 	}
 
 	// Methods

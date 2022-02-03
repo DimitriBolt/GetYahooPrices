@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 public class OneTickerFetcher {
 
 	// Class variables
-	private static final String YAHOO_QUOTE_URL_FMT = "https://query2.finance.yahoo.com/v8/finance/chart/%s?interval=%s&range=1y&includeTimestamps=true";
+	private static final String YAHOO_QUOTE_URL_FMT = "https://query2.finance.yahoo.com/v8/finance/chart/%s?interval=%s&range=3y&includeTimestamps=true";
 	private JsonElement jsonElement;
 	private String strJsonUrl;
 
