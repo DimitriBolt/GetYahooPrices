@@ -67,6 +67,7 @@ public class GetYahooPrices {
 					try {
 						entry.getValue().getTimeStampJsonArray().size(); // Просто проверка!!!
 						long startStringComposing = System.nanoTime();
+						// https://chartio.com/resources/tutorials/how-to-insert-if-row-does-not-exist-upsert-in-mysql/
 						String sqlCommand = String.format(Locale.US,
 								"INSERT prices(ticker, dealTime, volume, openPrice, high, low, closePrice, adjClose) VALUES ('%1$s', %2$d, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s)", // Сформировано начало строки
 								entry.getKey(), // Текстовое значение тиккера. Остальные поля - численные.
