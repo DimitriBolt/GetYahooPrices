@@ -1,25 +1,15 @@
-/**
- * 
- */
 package investments.Bolt;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * @author dimitri
- *
- */
 class JsonFromUrl {
 	// static Class variables
 	// private Instance variable

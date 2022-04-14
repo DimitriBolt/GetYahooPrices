@@ -28,14 +28,14 @@ public class GetYahooPrices {
 
 		TickerChooser tickerChooser;
 		tickerChooser = new TickerChooser(iFile);
-		ArrayList<String> tickers = tickerChooser.getTickers();
-		System.out.printf("Main: Получили список tickers = %s\n\n", tickers);
+		ArrayList<String> tickerS = tickerChooser.getTickers();
+		System.out.printf("Main: Получили список tickers = %s\n\n", tickerS);
 
-		// allTickersAgregator хранит в себе словарь списков с ценами.
-		AllTickersAgregator allTickersAgregator = new AllTickersAgregator(tickers);
+		// allTickersAgregator хранит в себе словарь списков с ценами. На входе получает список тикеров tickers 
+		AllTickersAgregator allTickersAgregator = new AllTickersAgregator(tickerS);
 		SortedMap<String, OneTickerParser> allTickersMap = new TreeMap<String, OneTickerParser>();
 		allTickersMap = allTickersAgregator.getAllPrices();
-		System.out.printf("Main: Получили словарь со всеми данными = %s\n\n", allTickersMap);
+//		System.out.printf("Main: Получили словарь со всеми данными = %s\n\n", allTickersMap);
 
 		insertToDB2(allTickersMap);
 	}

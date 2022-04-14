@@ -1,9 +1,6 @@
 package investments.Bolt;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gson.JsonElement;
 
 public class OneTickerFetcher {
@@ -15,13 +12,19 @@ public class OneTickerFetcher {
 
 	// Initializer block
 	// Constructors
-	public OneTickerFetcher(String ticker, String frequency) throws IOException {
+	public OneTickerFetcher(String ticker, String frequency) {
 		// https://stackoverflow.com/questions/44030983/yahoo-finance-url-not-working/47505102#47505102
 		String strJsonUrl = String.format(YAHOO_QUOTE_URL_FMT, ticker, frequency);
 		this.strJsonUrl = strJsonUrl;
-		JsonFromUrl jsonFromUrl = new JsonFromUrl(strJsonUrl);
-		JsonElement jsonElement = jsonFromUrl.getJsonElement();
-		this.jsonElement = jsonElement;
+		JsonFromUrl jsonFromUrl;
+		try {
+			jsonFromUrl = new JsonFromUrl(strJsonUrl);
+			JsonElement jsonElement = jsonFromUrl.getJsonElement();
+			this.jsonElement = jsonElement;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// http://it.kgsu.ru/JA_OS/ja_os145.html
 	}
 
@@ -34,7 +37,7 @@ public class OneTickerFetcher {
 
 	public String getStrJsonUrl() {
 		// Только для анализа исключения ClassCastException
-		return strJsonUrl;
+		return this.strJsonUrl;
 	}
 
 }
