@@ -28,6 +28,7 @@ class JsonFromUrl {
 
 		URL url = new URL(urlString);
 		// TODO Цикл, пока не соединимся.
+		int i = 0; // проверка от бесконечного цикла.
 		do {
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(150000);
@@ -72,6 +73,11 @@ class JsonFromUrl {
 				// this.jsonElement = null;
 			} finally {
 				connection.disconnect();
+			}
+			i++;
+			if (i > 10) {
+				System.out.printf("%s\t |79 \t |%s\t |strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
+				this.hangState = false; // Принудительный выход из цикла
 			}
 		} while (this.hangState);
 	}
