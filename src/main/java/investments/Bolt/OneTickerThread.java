@@ -10,7 +10,6 @@ public class OneTickerThread extends Thread {
 	private Map<String, OneTickerParser> allTickersMap = new HashMap<String, OneTickerParser>();
 	private int iTickers;
 	// Initializer block
-	private boolean hangState = false;
 
 	// Constructors
 	OneTickerThread(String ticker, int iTickers, SortedMap<String, OneTickerParser> allTickersMap) {
@@ -23,7 +22,6 @@ public class OneTickerThread extends Thread {
 	public void run() {
 		// 1. Скачиваем JsonElement для одного тикера.
 		OneTickerFetcher oneTickerFetcher = new OneTickerFetcher(this.ticker, "1d");
-		this.hangState = oneTickerFetcher.hangState();
 
 		// 2.0 Проверка, что полученный JsonElement содержит .getAsJsonArray("timestamp") и его можно parse'ить.
 		try {
@@ -42,10 +40,5 @@ public class OneTickerThread extends Thread {
 		}
 		System.out.printf("Тиккер %7s, скачан и рас-parse'ен\t № %4d\r", this.ticker, this.iTickers);
 	}
-
 	// Accessor (= getter) methods
-	boolean hangState() {
-		return this.hangState;
-	}
-
 }

@@ -39,9 +39,4 @@ public class OneTickerFetcher {
 		// Только для анализа исключения ClassCastException
 		return this.strJsonUrl;
 	}
-
-	boolean hangState() {
-		return this.jsonFromUrl.hangState();
-	}
-
 }

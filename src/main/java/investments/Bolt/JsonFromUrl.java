@@ -29,7 +29,7 @@ class JsonFromUrl {
 		int i = 1; // проверка от бесконечного цикла.
 		do {
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setConnectTimeout(30000);
+			connection.setConnectTimeout(40000);
 			connection.setDoInput(true);
 			try {
 				connection.connect();
