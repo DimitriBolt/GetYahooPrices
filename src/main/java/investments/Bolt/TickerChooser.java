@@ -9,12 +9,12 @@ import java.util.Scanner;
 
 public class TickerChooser {
 	// Instance Variables
+	@SuppressWarnings("serial")
 	private ArrayList<String> tickers = new ArrayList<String>() {
 		{
 			add("SPY");
 		}
 	};
-	private String iFile;
 	// Initializer block
 	{
 		tickers.add("%5EDJI");

@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.protobuf.ByteString;
-
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
@@ -28,10 +26,10 @@ class JsonFromUrl {
 
 		URL url = new URL(urlString);
 		// TODO Цикл, пока не соединимся.
-		int i = 0; // проверка от бесконечного цикла.
+		int i = 1; // проверка от бесконечного цикла.
 		do {
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setConnectTimeout(150000);
+			connection.setConnectTimeout(30000);
 			connection.setDoInput(true);
 			try {
 				connection.connect();
@@ -54,6 +52,7 @@ class JsonFromUrl {
 				} else {
 					// Суть!!
 					InputStream in = connection.getInputStream();
+					// В multi threading режиме может зависать. 
 					JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(in));
 					this.jsonElement = jsonElement;
 					this.hangState = false;
@@ -61,23 +60,21 @@ class JsonFromUrl {
 				// javax.net.ssl.SSLException: Программа на вашем хост-компьютере разорвала установленное подключение
 			} catch (ConnectException ex) {
 				// Повисли....
-				System.out.printf("%s\t |65 \t |%s\t |strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), urlString);
+				System.out.printf("%s\t |63 \t |%s\t |strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), urlString);
 				this.hangState = true;
 				try {
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				// TODO надо пере-набирать тикер.
-				// this.jsonElement = null;
 			} finally {
 				connection.disconnect();
 			}
 			i++;
-			if (i > 10) {
-				System.out.printf("%s\t |79 \t |%s\t |strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
+			if (i >= 4 & this.hangState) {
+				System.out.printf("%s\t |75 \t | i=%s, ticker dropped! |strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
 				this.hangState = false; // Принудительный выход из цикла
+				break;
 			}
 		} while (this.hangState);
 	}
