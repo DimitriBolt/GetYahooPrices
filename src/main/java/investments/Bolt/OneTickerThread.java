@@ -32,7 +32,7 @@ public class OneTickerThread extends Thread {
 			this.allTickersMap.put(ticker, oneTickerParser);
 		} catch (NullPointerException ex) {
 //			System.out.println(ex);
-			System.out.printf("35 | %s | Тиккер %s ничено не прислал. | strJsonUrl = %s\n", this.getClass().getName(), this.ticker, oneTickerFetcher.getStrJsonUrl());
+			System.out.printf("Class = %s | Row=35 |  Тиккер %s ничено не прислал. | strJsonUrl = %s\n", this.getClass().getSimpleName(), this.ticker, oneTickerFetcher.getStrJsonUrl());
 		} catch (ClassCastException ex) {
 			System.out.printf("\t%s\t => strJsonUrl = %s%n", this.getClass().getName(), oneTickerFetcher.getStrJsonUrl());
 			System.out.println(ex);

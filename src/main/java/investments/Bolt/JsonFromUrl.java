@@ -46,13 +46,12 @@ class JsonFromUrl {
 			}
 			try {
 				if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-					System.out.printf("%s\t", connection.getResponseMessage());
-					System.out.printf("%s\t => strJsonUrl = %s%n", this.getClass().getName(), urlString);
+					System.out.printf("Class = %s | row = 49 | %s | Попытка соединения = %s |strJsonUrl = %s%n", this.getClass().getSimpleName(), connection.getResponseMessage(), i, urlString);
 					this.jsonElement = null;
 				} else {
 					// Суть!!
 					InputStream in = connection.getInputStream();
-					// В multi threading режиме может зависать. 
+					// В multi threading режиме может зависать.
 					JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(in));
 					this.jsonElement = jsonElement;
 					this.hangState = false;
@@ -60,7 +59,7 @@ class JsonFromUrl {
 				// javax.net.ssl.SSLException: Программа на вашем хост-компьютере разорвала установленное подключение
 			} catch (ConnectException ex) {
 				// Повисли....
-				System.out.printf("Class = %s | row = 63 | %s | Попытка соединения = %s |strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i,  urlString);
+				System.out.printf("Class = %s | row = 63 | %s | Попытка соединения = %s |strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
 				this.hangState = true;
 				try {
 					Thread.sleep(5000);
@@ -84,9 +83,5 @@ class JsonFromUrl {
 	// Accessor (= getter) methods
 	JsonElement getJsonElement() {
 		return this.jsonElement;
-	}
-
-	boolean hangState() {
-		return this.hangState;
 	}
 }
