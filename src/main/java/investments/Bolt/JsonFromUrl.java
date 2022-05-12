@@ -46,7 +46,8 @@ class JsonFromUrl {
 			}
 			try {
 				if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-					System.out.printf("Class = %s | row = 49 | %s | Попытка соединения = %s |strJsonUrl = %s%n", this.getClass().getSimpleName(), connection.getResponseMessage(), i, urlString);
+					// Этот блок случается, когда тиккер не найден.
+					System.out.printf("Class = %s \t| row = 49 | %s | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), connection.getResponseMessage(), i, urlString);
 					this.jsonElement = null;
 				} else {
 					// Суть!!
@@ -59,7 +60,7 @@ class JsonFromUrl {
 				// javax.net.ssl.SSLException: Программа на вашем хост-компьютере разорвала установленное подключение
 			} catch (ConnectException ex) {
 				// Повисли....
-				System.out.printf("Class = %s | row = 63 | %s | Попытка соединения = %s |strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
+				System.out.printf("Class = %s | row = 62 | %s | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
 				this.hangState = true;
 				try {
 					Thread.sleep(5000);

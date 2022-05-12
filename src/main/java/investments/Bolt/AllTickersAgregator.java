@@ -1,8 +1,8 @@
 package investments.Bolt;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -14,7 +14,7 @@ public class AllTickersAgregator {
 
 	// Initializer block
 	// Constructors
-	AllTickersAgregator(ArrayList<String> tickerS) throws IOException {
+	AllTickersAgregator(Set<String> tickerS) throws IOException {
 		int iTickers = 1;
 		HashSet<OneTickerThread> tickerThreadS = new HashSet<OneTickerThread>(tickerS.size()); // сюда надо складывать потоки.
 
@@ -24,6 +24,8 @@ public class AllTickersAgregator {
 			threadName.start();
 			tickerThreadS.add(threadName);
 		} // End of for
+		
+		System.out.printf("this.allTickersMap.size() = %s\n", this.allTickersMap.size());
 
 		// Делаем так, чтобы потоки подождали друг друга.
 		for (OneTickerThread threadName : tickerThreadS) {
@@ -32,13 +34,16 @@ public class AllTickersAgregator {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		} // все потоки должны завершиться.
+		} // все потоки должны завершиться. ! Тоько здесь мы собрали все потоки в кучу!
+		System.out.printf("tickerThreadS.size() = %s\n", tickerThreadS.size());
+		
 
 	}// End of constructors
 
 	// Methods
 	// Accessor (= getter) methods
 	SortedMap<String, OneTickerParser> getAllPrices() {
+		System.out.printf("this.allTickersMap.size() = %s\n", this.allTickersMap.size());
 		return this.allTickersMap;
 	}
 }

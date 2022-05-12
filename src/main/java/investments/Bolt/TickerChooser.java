@@ -10,26 +10,26 @@ import java.util.Scanner;
 public class TickerChooser {
 	// Instance Variables
 	@SuppressWarnings("serial")
-	private ArrayList<String> tickers = new ArrayList<String>() {
+	private ArrayList<String> tickerS = new ArrayList<String>() {
 		{
 			add("SPY");
 		}
 	};
 	// Initializer block
 	{
-		tickers.add("%5EDJI");
-//		tickers.add("GC=F");
+		tickerS.add("%5EDJI");
+//		tickerS.add("GC=F");
 	}
 
 	// Create a class constructors for the TickerChooser class
 	TickerChooser() {
-		tickers.add("CL=F");
-		tickers.add("NEBLQ");
-		tickers.add("BR");
-		tickers.add("BAX");
-		tickers.add("SMCI");
-		tickers.add("UVV");
-		tickers.add("GTT");
+		tickerS.add("CL=F");
+		tickerS.add("NEBLQ");
+		tickerS.add("BR");
+		tickerS.add("BAX");
+		tickerS.add("SMCI");
+		tickerS.add("UVV");
+		tickerS.add("GTT");
 
 	}
 
@@ -49,7 +49,7 @@ public class TickerChooser {
 				while (scanner.hasNext()) {
 					String data = scanner.next();
 					if (index == 1)
-						tickers.add(data);
+						tickerS.add(data);
 					index++;
 				}
 			}
@@ -59,14 +59,14 @@ public class TickerChooser {
 
 //		this.iFile = "THNK.V";
 
-//		tickers.add("CL=F");
-		tickers.add("TSLA");
-//		tickers.add(this.iFile);
+//		tickerS.add("CL=F");
+		tickerS.add("TSLA");
+//		tickerS.add(this.iFile);
 	}
 
 	// Accessor Methods
 	ArrayList<String> getTickers() {
-		return tickers;
+		return tickerS;
 	}
 
 }

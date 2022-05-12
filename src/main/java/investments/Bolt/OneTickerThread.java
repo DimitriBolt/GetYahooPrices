@@ -23,7 +23,7 @@ public class OneTickerThread extends Thread {
 		// 1. Скачиваем JsonElement для одного тикера.
 		OneTickerFetcher oneTickerFetcher = new OneTickerFetcher(this.ticker, "1d");
 
-		// 2.0 Проверка, что полученный JsonElement содержит .getAsJsonArray("timestamp") и его можно parse'ить.
+		// 2.0 Проверка через исключение, что полученный JsonElement содержит .getAsJsonArray("timestamp") и его можно parse'ить.
 		try {
 			oneTickerFetcher.get1TikerPrices().getAsJsonObject().getAsJsonObject("chart").getAsJsonArray("result").get(0).getAsJsonObject().getAsJsonArray("timestamp").isJsonArray();
 			// 2.1 Parse-им JsonElement для 1-го тикера.
@@ -31,8 +31,9 @@ public class OneTickerThread extends Thread {
 			// 3. Добавляем.
 			this.allTickersMap.put(ticker, oneTickerParser);
 		} catch (NullPointerException ex) {
+			// Это случается, если я в JsonFromUrl выставил jsonElement = null и нечего парсить, а фактически это значит, что тиккер умер.
 //			System.out.println(ex);
-			System.out.printf("Class = %s | Row=35 |  Тиккер %s ничено не прислал. | strJsonUrl = %s\n", this.getClass().getSimpleName(), this.ticker, oneTickerFetcher.getStrJsonUrl());
+			System.out.printf("Class = %s \t| Row=35 | Тиккер %s ничено не прислал. | strJsonUrl = %s\n", this.getClass().getSimpleName(), this.ticker, oneTickerFetcher.getStrJsonUrl());
 		} catch (ClassCastException ex) {
 			System.out.printf("\t%s\t => strJsonUrl = %s%n", this.getClass().getName(), oneTickerFetcher.getStrJsonUrl());
 			System.out.println(ex);

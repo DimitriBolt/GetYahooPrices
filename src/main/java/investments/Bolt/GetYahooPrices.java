@@ -8,8 +8,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -28,8 +30,8 @@ public class GetYahooPrices {
 
 		TickerChooser tickerChooser;
 		tickerChooser = new TickerChooser(iFile);
-		ArrayList<String> tickerS = tickerChooser.getTickers();
-		System.out.printf("Main: Получили список tickers = %s\n\n", tickerS);
+		Set <String> tickerS = new HashSet<String>(tickerChooser.getTickers());
+		System.out.printf("Main: Получили список tickers = %s\n Количество тиккеров=%s\n", tickerS, tickerS.size());
 
 		// allTickersAgregator хранит в себе словарь списков с ценами. На входе получает список тикеров tickers 
 		AllTickersAgregator allTickersAgregator = new AllTickersAgregator(tickerS);
