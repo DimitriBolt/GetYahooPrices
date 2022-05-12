@@ -6,41 +6,74 @@ import java.io.InputStreamReader;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.protobuf.ByteString;
 
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+
+import javax.net.ssl.SSLException;
 
 class JsonFromUrl {
 	// static Class variables
 	// private Instance variable
 	private JsonElement jsonElement;
+	private boolean hangState = false;
 
 	// Initializer block
 	// Constructors
 	JsonFromUrl(String urlString) throws IOException {
+		// https://pro-java.ru/rabota-s-setyu-java/obzor-klassa-httpurlconnection-java-primery-rabotayushhix-programm/
+
 		URL url = new URL(urlString);
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		connection.setConnectTimeout(20000);
-		connection.setDoInput(true);
-		connection.connect(); // Exception in thread "main" java.net.SocketTimeoutException: Connect timed out
-		try {
-			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				System.out.printf("%s\t", connection.getResponseMessage());
-				System.out.printf("%s\t => strJsonUrl = %s%n", this.getClass().getName(), urlString);
-				this.jsonElement = null;
-			} else {
-				InputStream in = connection.getInputStream();
-				JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(in));
-//			JsonObject jsonObject = jsonElement.getAsJsonObject(); // ??
-//			this.json = (jsonObject.has("response")) ? jsonObject.get("response").toString() : "[]"; //?
-				this.jsonElement = jsonElement;
+		// TODO Цикл, пока не соединимся.
+		do {
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setConnectTimeout(150000);
+			connection.setDoInput(true);
+			try {
+				connection.connect();
+			} catch (SocketTimeoutException e) {
+				System.out.printf("32 %s\t%s\t => strJsonUrl = %s%n", e.getMessage(), this.getClass().getName(), urlString);
+			} // Exception in thread "main" java.net.SocketTimeoutException: Connect timed out
+			catch (ConnectException ex) {
+//				System.out.printf("%s\t |36 \t |%s\t |strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), urlString);
+				// Это значит началась жопа, сервер тормозит.
+				// TODO Что-то сделать с ConnectException?? Подождать??? Заново подключиться??
+			} catch (SSLException ex) {
+				System.out.printf("45 %s\t%s\t => strJsonUrl = %s%n", ex.getMessage(), this.getClass().getName(), urlString);
+				this.hangState = true;
 			}
-		// TODO Сделать реальную обработку исключения 
-			// javax.net.ssl.SSLException: Программа на вашем хост-компьютере разорвала установленное подключение
-			//
-		} finally {
-			connection.disconnect();
-		}
+			try {
+				if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+					System.out.printf("%s\t", connection.getResponseMessage());
+					System.out.printf("%s\t => strJsonUrl = %s%n", this.getClass().getName(), urlString);
+					this.jsonElement = null;
+				} else {
+					// Суть!!
+					InputStream in = connection.getInputStream();
+					JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(in));
+					this.jsonElement = jsonElement;
+					this.hangState = false;
+				}
+				// javax.net.ssl.SSLException: Программа на вашем хост-компьютере разорвала установленное подключение
+			} catch (ConnectException ex) {
+				// Повисли....
+//				System.out.printf("%s\t |65 \t |%s\t |strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), urlString);
+				this.hangState = true;
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// TODO надо пере-набирать тикер.
+				// this.jsonElement = null;
+			} finally {
+				connection.disconnect();
+			}
+		} while (this.hangState);
 	}
 
 	// Methods
@@ -48,5 +81,9 @@ class JsonFromUrl {
 	// Accessor (= getter) methods
 	JsonElement getJsonElement() {
 		return this.jsonElement;
+	}
+
+	boolean hangState() {
+		return this.hangState;
 	}
 }
