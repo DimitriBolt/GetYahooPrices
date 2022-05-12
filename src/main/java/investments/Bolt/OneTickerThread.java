@@ -29,7 +29,11 @@ public class OneTickerThread extends Thread {
 			// 2.1 Parse-им JsonElement для 1-го тикера.
 			OneTickerParser oneTickerParser = new OneTickerParser(oneTickerFetcher.get1TikerPrices());
 			// 3. Добавляем.
-			this.allTickersMap.put(ticker, oneTickerParser);
+			// TODO хорошо бы понять, сколько раз я добавляю. Видимо не каждый поток сложил что-то в Map
+			if (this.allTickersMap.put(ticker, oneTickerParser) != null) {
+				System.out.printf("Хрень какая-то", ticker);
+			}
+			;
 		} catch (NullPointerException ex) {
 			// Это случается, если я в JsonFromUrl выставил jsonElement = null и нечего парсить, а фактически это значит, что тиккер умер.
 //			System.out.println(ex);

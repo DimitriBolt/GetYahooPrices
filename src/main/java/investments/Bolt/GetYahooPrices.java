@@ -44,6 +44,8 @@ public class GetYahooPrices {
 
 	static void insertToDB2(SortedMap<String, OneTickerParser> allTickersMap) {
 		// java -classpath c:\Java\mysql-connector-java-8.0.11.jar;c:\Java Program
+		int i1 = allTickersMap.keySet().size();
+		System.out.printf("Class = %s | row = 47 | allTickersMap.size() = %s\n\n", "Main", i1);
 		try {
 			// http://it.kgsu.ru/JA_OS/ja_os125.html
 			// https://metanit.com/java/database/1.1.php

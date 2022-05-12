@@ -70,8 +70,7 @@ class JsonFromUrl {
 			} finally {
 				connection.disconnect();
 			}
-			i++;
-			if (i >= 4 & this.hangState) {
+			if (++i >= 4 & this.hangState) {
 				System.out.printf("%s\t |75 \t | i=%s, ticker dropped! |strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
 				this.hangState = false; // Принудительный выход из цикла
 				break;

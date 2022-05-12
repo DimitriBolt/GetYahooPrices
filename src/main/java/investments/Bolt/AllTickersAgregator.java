@@ -16,17 +16,14 @@ public class AllTickersAgregator {
 	// Constructors
 	AllTickersAgregator(Set<String> tickerS) throws IOException {
 		int iTickers = 1;
-		HashSet<OneTickerThread> tickerThreadS = new HashSet<OneTickerThread>(tickerS.size()); // сюда надо складывать потоки.
-
+		HashSet<OneTickerThread> tickerThreadS = new HashSet<OneTickerThread>(); // сюда надо складывать потоки.
+		System.out.printf("Class = %s | row = 35 | tickerS.size() = %s\n\n", this.getClass().getSimpleName(), tickerS.size());
 		for (String ticker : tickerS) {
 			// Запускаем 3000 потоков
 			OneTickerThread threadName = new OneTickerThread(ticker, iTickers++, this.allTickersMap);
 			threadName.start();
 			tickerThreadS.add(threadName);
 		} // End of for
-		
-		System.out.printf("this.allTickersMap.size() = %s\n", this.allTickersMap.size());
-
 		// Делаем так, чтобы потоки подождали друг друга.
 		for (OneTickerThread threadName : tickerThreadS) {
 			try {
@@ -34,8 +31,8 @@ public class AllTickersAgregator {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		} // все потоки должны завершиться. ! Тоько здесь мы собрали все потоки в кучу!
-		System.out.printf("tickerThreadS.size() = %s\n", tickerThreadS.size());
+		} // все потоки должны завершиться. ! Только здесь мы собрали все потоки в кучу!
+		System.out.printf("Class = %s | row = 35 | tickerThreadS.size() = %s\n\n", this.getClass().getSimpleName(), tickerThreadS.size());
 		
 
 	}// End of constructors
@@ -43,7 +40,7 @@ public class AllTickersAgregator {
 	// Methods
 	// Accessor (= getter) methods
 	SortedMap<String, OneTickerParser> getAllPrices() {
-		System.out.printf("this.allTickersMap.size() = %s\n", this.allTickersMap.size());
+		System.out.printf("Class = %s | row = 43 | this.allTickersMap.size() = %s\n\n", this.getClass().getSimpleName(), this.allTickersMap.size());
 		return this.allTickersMap;
 	}
 }
