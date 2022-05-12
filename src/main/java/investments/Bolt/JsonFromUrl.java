@@ -60,7 +60,7 @@ class JsonFromUrl {
 				// javax.net.ssl.SSLException: Программа на вашем хост-компьютере разорвала установленное подключение
 			} catch (ConnectException ex) {
 				// Повисли....
-				System.out.printf("%s\t |63 \t |%s\t |strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), urlString);
+				System.out.printf("Class = %s | row = 63 | %s | Попытка соединения = %s |strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i,  urlString);
 				this.hangState = true;
 				try {
 					Thread.sleep(5000);
