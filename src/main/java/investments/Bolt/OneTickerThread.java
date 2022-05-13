@@ -34,6 +34,7 @@ public class OneTickerThread extends Thread {
 				System.out.printf("Хрень какая-то", ticker);
 			}
 			;
+			System.out.printf("Тиккер %7s, скачан и рас-parse'ен\t № %4d\r", this.ticker, this.iTickers);
 		} catch (NullPointerException ex) {
 			// Это случается, если я в JsonFromUrl выставил jsonElement = null и нечего парсить, а фактически это значит, что тиккер умер.
 //			System.out.println(ex);
@@ -43,7 +44,6 @@ public class OneTickerThread extends Thread {
 			System.out.println(ex);
 			System.out.printf("Тиккер %s прислал, но отказ.\n-------------------\n\n", this.ticker);
 		}
-		System.out.printf("Тиккер %7s, скачан и рас-parse'ен\t № %4d\r", this.ticker, this.iTickers);
 	}
 	// Accessor (= getter) methods
 }

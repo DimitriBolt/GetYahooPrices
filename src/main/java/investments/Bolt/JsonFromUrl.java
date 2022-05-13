@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
@@ -40,7 +41,10 @@ class JsonFromUrl {
 				// Это значит началась жопа, сервер тормозит.
 				// TODO Что-то сделать с ConnectException?? Подождать??? Заново подключиться??
 			} catch (SSLException ex) {
-				System.out.printf("45 %s\t%s\t => strJsonUrl = %s%n", ex.getMessage(), this.getClass().getName(), urlString);
+				System.out.printf("44 %s\t%s\t => strJsonUrl = %s%n", ex.getMessage(), this.getClass().getName(), urlString);
+				this.hangState = true;
+			} catch (SocketException ex) {
+				System.out.printf("47 %s\t%s\t => strJsonUrl = %s%n", ex.getMessage(), this.getClass().getName(), urlString);
 				this.hangState = true;
 			}
 			try {
@@ -62,6 +66,7 @@ class JsonFromUrl {
 				System.out.printf("Class = %s | row = 63 | %s | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
 				this.hangState = true;
 				try {
+					Thread.currentThread();
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -69,7 +74,7 @@ class JsonFromUrl {
 			} finally {
 				connection.disconnect();
 			}
-			if (++i >= 4 & this.hangState) {
+			if (i++ >= 3 & this.hangState) {
 				System.out.printf("%s\t |75 \t | i=%s, ticker dropped! |strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
 				this.hangState = false; // Принудительный выход из цикла
 				break;
