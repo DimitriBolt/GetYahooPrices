@@ -31,7 +31,7 @@ public class GetYahooPrices {
 		TickerChooser tickerChooser;
 		tickerChooser = new TickerChooser(iFile);
 		Set <String> tickerS = new HashSet<String>(tickerChooser.getTickers());
-		System.out.printf("Main: Получили список tickers = %s\n Количество тиккеров=%s\n", tickerS, tickerS.size());
+		System.out.printf("Main: Получили %s тиккеров\n", tickerS.size());
 
 		// allTickersAgregator хранит в себе словарь списков с ценами. На входе получает список тикеров tickers 
 		AllTickersAgregator allTickersAgregator = new AllTickersAgregator(tickerS);

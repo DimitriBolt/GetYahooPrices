@@ -25,7 +25,6 @@ class JsonFromUrl {
 		// https://pro-java.ru/rabota-s-setyu-java/obzor-klassa-httpurlconnection-java-primery-rabotayushhix-programm/
 
 		URL url = new URL(urlString);
-		// TODO Цикл, пока не соединимся.
 		int i = 1; // проверка от бесконечного цикла.
 		do {
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -60,7 +59,7 @@ class JsonFromUrl {
 				// javax.net.ssl.SSLException: Программа на вашем хост-компьютере разорвала установленное подключение
 			} catch (ConnectException ex) {
 				// Повисли....
-				System.out.printf("Class = %s | row = 62 | %s | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
+				System.out.printf("Class = %s | row = 63 | %s | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
 				this.hangState = true;
 				try {
 					Thread.sleep(5000);
