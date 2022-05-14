@@ -32,7 +32,7 @@ public class AllTickersAgregator {
 				e.printStackTrace();
 			}
 		} // все потоки должны завершиться. ! Только здесь мы собрали все потоки в кучу!
-		System.out.printf("Class = %s | row = 35 | tickerThreadS.size() = %s\n\n", this.getClass().getSimpleName(), tickerThreadS.size());
+		System.out.printf("Class = %s | row = 35 | tickerThreadS.size() = %s | Все потоки запущены, с-join-нены и работают ...\n\n", this.getClass().getSimpleName(), tickerThreadS.size());
 		
 
 	}// End of constructors
@@ -40,7 +40,7 @@ public class AllTickersAgregator {
 	// Methods
 	// Accessor (= getter) methods
 	SortedMap<String, OneTickerParser> getAllPrices() {
-		System.out.printf("Class = %s | row = 43 | this.allTickersMap.size() = %s\n\n", this.getClass().getSimpleName(), this.allTickersMap.size());
+		System.out.printf("Class = %s | row = 43 | this.allTickersMap.size() = %s | Все цены получены, все потоки завершились.\n\n", this.getClass().getSimpleName(), this.allTickersMap.size());
 		return this.allTickersMap;
 	}
 }

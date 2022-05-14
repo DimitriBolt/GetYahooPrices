@@ -26,7 +26,7 @@ public class GetYahooPrices {
 			String userHomePath = System.getProperty("user.home");
 			iFile = new File(userHomePath, "/Downloads/pricing/ifile.txt");
 		}
-		String exstingDBTableName = args.length >= 1 ? args[1] : "prices";
+		String dbTableName = args.length >= 1 ? args[1] : "prices";
 
 		TickerChooser tickerChooser;
 		tickerChooser = new TickerChooser(iFile);
@@ -39,16 +39,15 @@ public class GetYahooPrices {
 		allTickersMap = allTickersAgregator.getAllPrices();
 //		System.out.printf("Main: Получили словарь со всеми данными = %s\n\n", allTickersMap);
 
-		insertToDB2(allTickersMap);
+		insertToDB2(allTickersMap, dbTableName);
 	}
 
-	static void insertToDB2(SortedMap<String, OneTickerParser> allTickersMap) {
+	static void insertToDB2(SortedMap<String, OneTickerParser> allTickersMap, String dbTableName) {
 		// java -classpath c:\Java\mysql-connector-java-8.0.11.jar;c:\Java Program
-		IsDBTableExists isDBTableExists = new IsDBTableExists("prices");
-		String exstingDBTableName = isDBTableExists.exstingDBTableName;
+		String exstingDBTableName = (new IsDBTableExists(dbTableName)).exstingDBTableName;
 
 		int i1 = allTickersMap.keySet().size();
-		System.out.printf("Class = %s | row = 47 | allTickersMap.size() = %s\n\n", "Main", i1);
+		System.out.printf("Class = %s | row = 47 | allTickersMap.size() = %s\n\n", "Main\t", i1);
 
 		try {
 			// http://it.kgsu.ru/JA_OS/ja_os125.html
@@ -58,8 +57,7 @@ public class GetYahooPrices {
 			DBCredentials dbCredentials = new DBCredentials(iniFile);
 			String mysqlUrlConnection = dbCredentials.getMySqlUrlConnection();
 			try (Connection conn = DriverManager.getConnection(mysqlUrlConnection); // Подключился к БД из DBCredentials.ini
-					BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(userHomePath + "/Documents/DurationAnalisys1BigInsert.csv"))) { // Подключился заодно и к файлу
-																																						// DurationAnalisys1BigInsert.csv
+					BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(userHomePath + "/Documents/DurationAnalisys1BigInsert.csv"))) { // Подключился заодно и к файлу DurationAnalisys1BigInsert.csv
 				// https://www.examclouds.com/ru/java/java-core-russian/try-with-resources
 				bufferedWriter.write("Tikker" + "," // Записываем Заголовок таблицы в файл для анализа времени INSERT.
 						+ "String sqlCommand = String.format(INSERT prices(ticker ... " + "," + "statement.executeUpdate(sqlCommand);" + "\n");
