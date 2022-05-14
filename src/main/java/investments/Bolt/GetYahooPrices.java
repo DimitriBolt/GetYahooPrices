@@ -26,13 +26,14 @@ public class GetYahooPrices {
 			String userHomePath = System.getProperty("user.home");
 			iFile = new File(userHomePath, "/Downloads/pricing/ifile.txt");
 		}
+		String exstingDBTableName = args.length >= 1 ? args[1] : "prices";
 
 		TickerChooser tickerChooser;
 		tickerChooser = new TickerChooser(iFile);
-		Set <String> tickerS = new HashSet<String>(tickerChooser.getTickers());
+		Set<String> tickerS = new HashSet<String>(tickerChooser.getTickers());
 		System.out.printf("Main: Получили %s тиккеров из файла %s\n", tickerS.size(), iFile);
 
-		// allTickersAgregator хранит в себе словарь списков с ценами. На входе получает список тикеров tickers 
+		// allTickersAgregator хранит в себе словарь списков с ценами. На входе получает список тикеров tickers
 		AllTickersAgregator allTickersAgregator = new AllTickersAgregator(tickerS);
 		SortedMap<String, OneTickerParser> allTickersMap = new TreeMap<String, OneTickerParser>();
 		allTickersMap = allTickersAgregator.getAllPrices();
@@ -43,8 +44,12 @@ public class GetYahooPrices {
 
 	static void insertToDB2(SortedMap<String, OneTickerParser> allTickersMap) {
 		// java -classpath c:\Java\mysql-connector-java-8.0.11.jar;c:\Java Program
+		IsDBTableExists isDBTableExists = new IsDBTableExists("prices");
+		String exstingDBTableName = isDBTableExists.exstingDBTableName;
+
 		int i1 = allTickersMap.keySet().size();
 		System.out.printf("Class = %s | row = 47 | allTickersMap.size() = %s\n\n", "Main", i1);
+
 		try {
 			// http://it.kgsu.ru/JA_OS/ja_os125.html
 			// https://metanit.com/java/database/1.1.php
@@ -53,47 +58,43 @@ public class GetYahooPrices {
 			DBCredentials dbCredentials = new DBCredentials(iniFile);
 			String mysqlUrlConnection = dbCredentials.getMySqlUrlConnection();
 			try (Connection conn = DriverManager.getConnection(mysqlUrlConnection); // Подключился к БД из DBCredentials.ini
-					BufferedWriter bufferedWriter = new BufferedWriter(
-							new FileWriter(userHomePath + "/Documents/DurationAnalisys1BigInsert.csv"))) { // Подключился заодно и к файлу DurationAnalisys1BigInsert.csv
+					BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(userHomePath + "/Documents/DurationAnalisys1BigInsert.csv"))) { // Подключился заодно и к файлу
+																																						// DurationAnalisys1BigInsert.csv
 				// https://www.examclouds.com/ru/java/java-core-russian/try-with-resources
 				bufferedWriter.write("Tikker" + "," // Записываем Заголовок таблицы в файл для анализа времени INSERT.
-						+ "String sqlCommand = String.format(INSERT localcrypto.prices(ticker ... " + ","
-						+ "statement.executeUpdate(sqlCommand);" + "\n");
+						+ "String sqlCommand = String.format(INSERT prices(ticker ... " + "," + "statement.executeUpdate(sqlCommand);" + "\n");
+
 				Statement statement = conn.createStatement();
-				statement.executeUpdate("TRUNCATE `GetYahooPrices`.`prices`"); // Очистил всю таблицу, чтобы не было дубликатов.  
+				statement.executeUpdate("TRUNCATE GetYahooPrices." + exstingDBTableName); // Очистил всю таблицу, чтобы не было дубликатов.
+
 				int iTickers = 1;
 				long durationStringComposung;
 				long durationSqlInsert;
 				for (Map.Entry<String, OneTickerParser> entry : allTickersMap.entrySet()) {
 					// Цикл по тиккерам.
-					System.out.printf("\rТиккер: %7s, будет добавлен в БД.\t №: %4d", entry.getKey(), iTickers++);
+					System.out.printf("\rТиккер: %7s, будет добавлен в таблицу %s.\t №: %4d", entry.getKey(), exstingDBTableName, iTickers++);
 					try {
 						entry.getValue().getTimeStampJsonArray().size(); // Просто проверка!!!
 						long startStringComposing = System.nanoTime();
 						// https://chartio.com/resources/tutorials/how-to-insert-if-row-does-not-exist-upsert-in-mysql/
 						String sqlCommand = String.format(Locale.US,
-								"INSERT prices(ticker, dealTime, volume, openPrice, high, low, closePrice, adjClose) VALUES ('%1$s', %2$d, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s)", // Сформировано начало строки
-								entry.getKey(), // Текстовое значение тиккера. Остальные поля - численные.
-								entry.getValue().getTimeStampJsonArray().get(0).getAsInt(),
-								entry.getValue().getVolumeJsonArray().get(0),
-								entry.getValue().getOpenJsonArray().get(0), // Первый элемент массива getOpenJsonArray
+								"INSERT %1$s(ticker, dealTime, volume, openPrice, high, low, closePrice, adjClose) VALUES ('%2$s', %3$d, %4$s, %5$s, %6$s, %7$s, %8$s, %9$s)", // Сформировано начало
+																																												// строки
+								exstingDBTableName, entry.getKey(), // Текстовое значение тикера. Остальные поля - численные.
+								entry.getValue().getTimeStampJsonArray().get(0).getAsInt(), entry.getValue().getVolumeJsonArray().get(0), entry.getValue().getOpenJsonArray().get(0), // Первый элемент
+																																														// массива
+																																														// getOpenJsonArray
 								entry.getValue().getHighJsonArray().get(0), //
 								entry.getValue().getLowJsonArray().get(0), // Первый элемент массива с ценами Low
-								entry.getValue().getCloseJsonArray().get(0),
-								entry.getValue().getAdjCloseJsonArray().get(0)); // Если нет adjClose, то не возможно взять 0-й элемент массива.
+								entry.getValue().getCloseJsonArray().get(0), entry.getValue().getAdjCloseJsonArray().get(0)); // Если нет adjClose, то не возможно взять 0-й элемент массива.
 
 						for (int i = 1; i < entry.getValue().getTimeStampJsonArray().size(); i++) {
 							// Цикл по TimeStamp'ам. Дополняю строку.
-							sqlCommand = sqlCommand
-									+ String.format(Locale.US, ", ('%1$s', %2$d, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s)", // Довесок строки
-											entry.getKey(), // Текстовое значение тиккера. Остальные поля - численные.
-											entry.getValue().getTimeStampJsonArray().get(i).getAsInt(),
-											entry.getValue().getVolumeJsonArray().get(i),
-											entry.getValue().getOpenJsonArray().get(i),
-											entry.getValue().getHighJsonArray().get(i),
-											entry.getValue().getLowJsonArray().get(i),
-											entry.getValue().getCloseJsonArray().get(i),
-											entry.getValue().getAdjCloseJsonArray().get(i)); // Если нет adjClose, то не возможно взять i-й элемент массива. 
+							sqlCommand = sqlCommand + String.format(Locale.US, ", ('%1$s', %2$d, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s)", // Довесок строки
+									entry.getKey(), // Текстовое значение тиккера. Остальные поля - численные.
+									entry.getValue().getTimeStampJsonArray().get(i).getAsInt(), entry.getValue().getVolumeJsonArray().get(i), entry.getValue().getOpenJsonArray().get(i),
+									entry.getValue().getHighJsonArray().get(i), entry.getValue().getLowJsonArray().get(i), entry.getValue().getCloseJsonArray().get(i),
+									entry.getValue().getAdjCloseJsonArray().get(i)); // Если нет adjClose, то не возможно взять i-й элемент массива.
 						}
 						durationStringComposung = System.nanoTime() - startStringComposing;
 
@@ -101,8 +102,8 @@ public class GetYahooPrices {
 						statement.executeUpdate(sqlCommand);
 						durationSqlInsert = System.nanoTime() - startSqlInsert;
 
-						String stringForAnalisys = entry.getKey() + ";" // Строка файла /Documents/DurationAnalisys1BigInsert.csv 
-								+ durationStringComposung + ";" 		// для анализа скорости записи в БД.
+						String stringForAnalisys = entry.getKey() + ";" // Строка файла /Documents/DurationAnalisys1BigInsert.csv
+								+ durationStringComposung + ";" // для анализа скорости записи в БД.
 								+ durationSqlInsert + "\n";
 						bufferedWriter.write(stringForAnalisys);
 
