@@ -31,6 +31,7 @@ class JsonFromUrl {
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(40000);
 			connection.setDoInput(true);
+			// Попытка соединения
 			try {
 				connection.connect();
 			} catch (SocketTimeoutException e) {
@@ -41,17 +42,20 @@ class JsonFromUrl {
 				// Это значит началась жопа, сервер тормозит.
 				// TODO Что-то сделать с ConnectException?? Подождать??? Заново подключиться??
 			} catch (SSLException ex) {
-				System.out.printf("44 %s\t%s\t => strJsonUrl = %s%n", ex.getMessage(), this.getClass().getName(), urlString);
+				System.out.printf("45 %s\t%s\t => strJsonUrl = %s%n", ex.getMessage(), this.getClass().getName(), urlString);
 				this.hangState = true;
 			} catch (SocketException ex) {
-				System.out.printf("47 %s\t%s\t => strJsonUrl = %s%n", ex.getMessage(), this.getClass().getName(), urlString);
+				System.out.printf("48 %s\t%s\t => strJsonUrl = %s%n", ex.getMessage(), this.getClass().getName(), urlString);
 				this.hangState = true;
 			}
+
+			// Попытка работы с установленным выше соединением
 			try {
 				if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
 					// Этот блок случается, когда тиккер не найден.
-					System.out.printf("Class = %s \t| row = 49 | %s | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), connection.getResponseMessage(), i, urlString);
-					this.jsonElement = null;
+					System.out.printf("Class = %s \t| row = 56 | getResponseMessage() = %s | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), connection.getResponseMessage(), i, urlString);
+//					this.jsonElement = null;
+					this.hangState = true; // В реальности нет зависания, просто используем туже переменную статуса.
 				} else {
 					// Суть!!
 					InputStream in = connection.getInputStream();
@@ -74,10 +78,13 @@ class JsonFromUrl {
 			} finally {
 				connection.disconnect();
 			}
+
 			if (i++ >= 3 & this.hangState) {
-				System.out.printf("%s\t |75 \t | i=%s, ticker dropped! |strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
+				// После 3- попыток хороша бы поднимать статус наверх. 
+				System.out.printf("%s\t |85 \t | i=%s, ticker dropped! |strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
 				this.hangState = false; // Принудительный выход из цикла
 				break;
+				// TODO нужно понять, что присваивать this.jsonElement после 3-х неудачных попыток. 
 			}
 		} while (this.hangState);
 	}
