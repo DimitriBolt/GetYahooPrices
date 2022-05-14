@@ -37,7 +37,6 @@ public class TickerChooser {
 //		https://javadevblog.com/kak-schitat-csv-fajl-v-java.html !!
 //		https://metanit.com/java/tutorial/6.9.php
 		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(iFile))) {
-			// ������ ���������
 			String line = null;
 			Scanner scanner = null;
 			int index;

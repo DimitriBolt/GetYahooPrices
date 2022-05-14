@@ -67,7 +67,7 @@ class JsonFromUrl {
 				// javax.net.ssl.SSLException: Программа на вашем хост-компьютере разорвала установленное подключение
 			} catch (ConnectException ex) {
 				// Повисли....
-				System.out.printf("Class = %s | row = 63 | %s | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
+				System.out.printf("Class = %s | row = 70 | %s | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
 				this.hangState = true;
 				try {
 					Thread.currentThread();
@@ -81,7 +81,7 @@ class JsonFromUrl {
 
 			if (i++ >= 3 & this.hangState) {
 				// После 3- попыток хороша бы поднимать статус наверх. 
-				System.out.printf("%s\t |85 \t | i=%s, ticker dropped! |strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
+				System.out.printf("%s\t |84 \t | i=%s, ticker dropped! |strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
 				this.hangState = false; // Принудительный выход из цикла
 				break;
 				// TODO нужно понять, что присваивать this.jsonElement после 3-х неудачных попыток. 
