@@ -37,6 +37,7 @@
 	<build>
 		<plugins>
 			<!-- -->
+			<!-- Надо от этого избавляться-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
