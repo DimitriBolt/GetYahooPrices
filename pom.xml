@@ -3,7 +3,7 @@
 
 	<groupId>GetYahooPrices</groupId>
 	<artifactId>GetYahooPrices</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>MultiThreadVersion</version>
 
 	<dependencies>
 		<dependency>
@@ -29,8 +29,8 @@
 	</dependencies>
 
 	<properties>
-		<maven.compiler.source>15</maven.compiler.source>
-		<maven.compiler.target>15</maven.compiler.target>
+		<maven.compiler.source>16</maven.compiler.source>
+		<maven.compiler.target>16</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -43,8 +43,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<release>15</release> <!-- <release>13/14/15</release> -->
-					<compilerArgs>--enable-preview</compilerArgs>
+					<release>16</release>
 				</configuration>
 			</plugin>
 			<!-- -->
