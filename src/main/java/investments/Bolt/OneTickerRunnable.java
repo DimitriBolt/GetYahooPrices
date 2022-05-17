@@ -20,6 +20,7 @@ public class OneTickerRunnable implements Runnable {
 	}
 
 	public void run() {
+		Thread.currentThread().setName(this.ticker);
 		// 1. Скачиваем JsonElement для одного тикера.
 		OneTickerFetcher oneTickerFetcher = new OneTickerFetcher(this.ticker, "1d");
 
