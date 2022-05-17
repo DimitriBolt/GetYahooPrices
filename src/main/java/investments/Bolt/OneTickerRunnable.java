@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 
-public class OneTickerThread extends Thread {
+public class OneTickerRunnable implements Runnable {
 	// Class variables
 	private String ticker;
 	private Map<String, OneTickerParser> allTickersMap = new HashMap<String, OneTickerParser>();
@@ -12,8 +12,8 @@ public class OneTickerThread extends Thread {
 	// Initializer block
 
 	// Constructors
-	OneTickerThread(String ticker, int iTickers, SortedMap<String, OneTickerParser> allTickersMap) {
-		super(ticker);
+	OneTickerRunnable(String ticker, int iTickers, SortedMap<String, OneTickerParser> allTickersMap) {
+//		super(ticker);
 		this.ticker = ticker;
 		this.iTickers = iTickers;
 		this.allTickersMap = allTickersMap;
@@ -34,11 +34,11 @@ public class OneTickerThread extends Thread {
 				System.out.printf("Хрень какая-то", ticker);
 			}
 			;
-			System.out.printf("Тиккер %7s, скачан и рас-parse'ен\t № %4d\r", this.ticker, this.iTickers);
+//			System.out.printf("Тиккер %7s, скачан и рас-parse'ен\t № %4d\r", Thread.currentThread().getName(), this.iTickers);
 		} catch (NullPointerException ex) {
 			// Это случается, если я в JsonFromUrl выставил jsonElement = null и нечего парсить, а фактически это значит, что тиккер умер.
 //			System.out.println(ex);
-			System.out.printf("Class = %s \t| Row=35 | Тиккер %s ничено не прислал. | strJsonUrl = %s\n", this.getClass().getSimpleName(), this.ticker, oneTickerFetcher.getStrJsonUrl());
+			System.out.printf("Class = %s \t| Row=41 | Тиккер %s ничено не прислал. | strJsonUrl = %s\n", this.getClass().getSimpleName(), this.ticker, oneTickerFetcher.getStrJsonUrl());
 		} catch (ClassCastException ex) {
 			System.out.printf("\t%s\t => strJsonUrl = %s%n", this.getClass().getName(), oneTickerFetcher.getStrJsonUrl());
 			System.out.println(ex);

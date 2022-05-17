@@ -31,6 +31,7 @@
 	<properties>
 		<maven.compiler.source>16</maven.compiler.source>
 		<maven.compiler.target>16</maven.compiler.target>
+		<!-- https://stackoverflow.com/questions/24144073/why-does-maven-warn-me-about-encoding -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -38,6 +39,7 @@
 		<plugins>
 			<!-- -->
 			<!-- Надо от этого избавляться-->
+			<!-- https://keepgrowing.in/java/how-to-fix-error-executing-maven-issue-after-updating-to-java-17/ -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

@@ -52,14 +52,17 @@ class JsonFromUrl {
 			// Попытка работы с установленным выше соединением
 			try {
 				if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-					// Этот блок случается, когда тиккер не найден.
+					// Этот блок случается, когда тикер не найден.
 					System.out.printf("Class = %s \t| row = 56 | getResponseMessage() = %s | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), connection.getResponseMessage(), i, urlString);
 //					this.jsonElement = null;
 					this.hangState = true; // В реальности нет зависания, просто используем туже переменную статуса.
 				} else {
 					// Суть!!
+					System.out.printf("Поток %7s, начинает закачку ... strJsonUrl = %s\r", Thread.currentThread().getName(), urlString);
 					InputStream in = connection.getInputStream();
 					// В multi threading режиме может зависать.
+					System.out.printf("Поток %7s, закончил закачку ... strJsonUrl = %s\r", Thread.currentThread().getName(), urlString);
+
 					JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(in));
 					this.jsonElement = jsonElement;
 					this.hangState = false;
