@@ -24,11 +24,12 @@ public class AllTickersAgregator {
 		int iTickers = 1;
 		Set<Future> futureSet = new HashSet<Future>(); // сюда надо складывать потоки.
 		System.out.printf("Class = %s | row = 35 | tickerS.size() = %s\n\n", this.getClass().getSimpleName(), tickerS.size());
-
+		// ExecutorService: https://habr.com/ru/post/260953/
 		ExecutorService executorService = Executors.newCachedThreadPool();
 
 		for (String ticker : tickerS) {
 			// Запускаем 3000 потоков
+			// TODO Более логично OneTickerRunnable сделать Callable и в конце складывать складывать в this.allTickersMap
 			OneTickerRunnable oneTickerRunnable = new OneTickerRunnable(ticker, iTickers++, this.allTickersMap); // Runnable
 			Future<?> future = executorService.submit(oneTickerRunnable);
 
@@ -36,23 +37,23 @@ public class AllTickersAgregator {
 		}
 		for (Future<?> future : futureSet) {
 			try {
-				future.get(2, TimeUnit.MINUTES);
+				future.get(3, TimeUnit.MINUTES);
 			} catch (InterruptedException | ExecutionException | TimeoutException e) {
 				// Слава богу здесь срабатывает java.util.concurrent.TimeoutException
 				// TODO но нужно понять, почему он срабатывает и как с этим бороться. 
-				e.printStackTrace();
-				System.out.printf("Class = %s \t| Row=41 | ?? %s  | strJsonUrl = %s\n", this.getClass().getSimpleName(), future.getClass().getSimpleName());
+				System.out.printf("\nClass = %s \t\t| Row=41 | %s  |\n", this.getClass().getSimpleName(), e.getClass().getSimpleName());
 			}
 		} // Тут все объединилось и, видимо, пока все не выполнился, дальше не идет. 
 		executorService.shutdown();
+		// TODO Это блок, судя по всему никогда не выполняется. Нужно его полностью переработать. 
 		try {
-			boolean done = executorService.awaitTermination(3, TimeUnit.MINUTES);
-			System.out.printf("Class = %s | row = 49 | executorService.awaitTermination = %s\n\n", this.getClass().getSimpleName(), done);
+			boolean done = executorService.awaitTermination(2, TimeUnit.MINUTES);
+			System.out.printf("\nClass = %s \t| row = 51 | executorService.awaitTermination = %s\n", this.getClass().getSimpleName(), done);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		// https://habr.com/ru/post/260953/
-		System.out.printf("Class = %s | row = 35 | tickerThreadS.size() = %s | Все потоки запущены, с-join-нены и работают ...\n\n", this.getClass().getSimpleName(), futureSet.size());
+		System.out.printf("Class = %s\t| row = 55 | tickerThreadS.size() = %s | Все потоки запущены, с-join-нены и работают ...\n\n", this.getClass().getSimpleName(), futureSet.size());
+		// TODO Если будет Callable, то здесь нужно будет сложить в this.allTickersMap все значения OneTickerRunnable.
 	}// End of constructors
 		// Methods
 		// Accessor (= getter) methods

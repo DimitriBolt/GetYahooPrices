@@ -34,11 +34,11 @@ class JsonFromUrl {
 			// Попытка соединения
 			try {
 				connection.connect();
-			} catch (SocketTimeoutException e) {
-				System.out.printf("32 %s\t%s\t => strJsonUrl = %s%n", e.getMessage(), this.getClass().getName(), urlString);
+			} catch (SocketTimeoutException | java.net.UnknownHostException e) {
+				System.out.printf("Class = %s | row = 38 | %s\t | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), e.getClass().getSimpleName(), i, urlString);
 			} // Exception in thread "main" java.net.SocketTimeoutException: Connect timed out
 			catch (ConnectException ex) {
-//				System.out.printf("%s\t |36 \t |%s\t |strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), urlString);
+				System.out.printf("Class = %s\t\t| row = 41 | %s\t | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
 				// Это значит началась жопа, сервер тормозит.
 				// TODO Что-то сделать с ConnectException?? Подождать??? Заново подключиться??
 			} catch (SSLException ex) {
@@ -68,9 +68,9 @@ class JsonFromUrl {
 					this.hangState = false;
 				}
 				// javax.net.ssl.SSLException: Программа на вашем хост-компьютере разорвала установленное подключение
-			} catch (ConnectException ex) {
+			} catch (ConnectException | java.net.UnknownHostException ex) {
 				// Повисли....
-				System.out.printf("Class = %s | row = 73 | %s\t | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
+				System.out.printf("Class = %s\t\t| row = 73 | %s\t | Попытка соединения = %s | strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
 				this.hangState = true;
 				try {
 					Thread.currentThread();
@@ -82,9 +82,9 @@ class JsonFromUrl {
 				connection.disconnect();
 			}
 
-			if (i++ >= 3 & this.hangState) {
+			if (i++ >= 4 & this.hangState) {
 				// После 3- попыток хороша бы поднимать статус наверх. 
-				System.out.printf("Class = %s | row = 87 \t | i=%s, ticker dropped! |strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
+				System.out.printf("Class = %s\t\t | row = 87 | i=%s, ticker dropped! \t\t| strJsonUrl = %s%n", this.getClass().getSimpleName(), i, urlString);
 				this.hangState = false; // Принудительный выход из цикла
 				break;
 				// TODO нужно понять, что присваивать this.jsonElement после 3-х неудачных попыток. 

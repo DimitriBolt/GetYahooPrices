@@ -13,6 +13,7 @@ public class OneTickerRunnable implements Runnable {
 
 	// Constructors
 	OneTickerRunnable(String ticker, int iTickers, SortedMap<String, OneTickerParser> allTickersMap) {
+	// По идее, хранит в себе 
 //		super(ticker);
 		this.ticker = ticker;
 		this.iTickers = iTickers;
@@ -29,7 +30,7 @@ public class OneTickerRunnable implements Runnable {
 			oneTickerFetcher.get1TikerPrices().getAsJsonObject().getAsJsonObject("chart").getAsJsonArray("result").get(0).getAsJsonObject().getAsJsonArray("timestamp").isJsonArray();
 			// 2.1 Parse-им JsonElement для 1-го тикера.
 			OneTickerParser oneTickerParser = new OneTickerParser(oneTickerFetcher.get1TikerPrices());
-			// 3. Добавляем.
+		// 2.1 Добавляем.
 			// TODO хорошо бы понять, сколько раз я добавляю. Видимо не каждый поток сложил что-то в Map
 			if (this.allTickersMap.put(ticker, oneTickerParser) != null) {
 				System.out.printf("Хрень какая-то", ticker);
@@ -39,7 +40,7 @@ public class OneTickerRunnable implements Runnable {
 		} catch (NullPointerException ex) {
 			// Это случается, если я в JsonFromUrl выставил jsonElement = null и нечего парсить, а фактически это значит, что тиккер умер.
 //			System.out.println(ex);
-			System.out.printf("Class = %s \t| Row=41 | Тиккер %s ничено не прислал. | strJsonUrl = %s\n", this.getClass().getSimpleName(), this.ticker, oneTickerFetcher.getStrJsonUrl());
+			System.out.printf("Class = %s\t | Row = 43 | Тиккер %s ничено не прислал. \t| strJsonUrl = %s\n\n", this.getClass().getSimpleName(), this.ticker, oneTickerFetcher.getStrJsonUrl());
 		} catch (ClassCastException ex) {
 			System.out.printf("\t%s\t => strJsonUrl = %s%n", this.getClass().getName(), oneTickerFetcher.getStrJsonUrl());
 			System.out.println(ex);
