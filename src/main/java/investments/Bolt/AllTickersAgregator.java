@@ -32,12 +32,12 @@ public class AllTickersAgregator {
 			// TODO Более логично OneTickerRunnable сделать Callable и в конце складывать складывать в this.allTickersMap
 			OneTickerRunnable oneTickerRunnable = new OneTickerRunnable(ticker, iTickers++, this.allTickersMap); // Runnable
 			Future<?> future = executorService.submit(oneTickerRunnable);
-
 			futureSet.add(future);
 		}
+		// ☝ Все потоки запустились ☝ и начали успешно работать.
 		for (Future<?> future : futureSet) {
 			try {
-				future.get(3, TimeUnit.MINUTES);
+				future.get(2, TimeUnit.MINUTES);
 			} catch (InterruptedException | ExecutionException | TimeoutException e) {
 				// Слава богу здесь срабатывает java.util.concurrent.TimeoutException
 				// TODO но нужно понять, почему он срабатывает и как с этим бороться. 
@@ -45,6 +45,7 @@ public class AllTickersAgregator {
 			}
 		} // Тут все объединилось и, видимо, пока все не выполнился, дальше не идет. 
 		executorService.shutdown();
+		
 		// TODO Это блок, судя по всему никогда не выполняется. Нужно его полностью переработать. 
 		try {
 			boolean done = executorService.awaitTermination(2, TimeUnit.MINUTES);
@@ -52,7 +53,8 @@ public class AllTickersAgregator {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.printf("Class = %s\t| row = 55 | tickerThreadS.size() = %s | Все потоки запущены, с-join-нены и работают ...\n\n", this.getClass().getSimpleName(), futureSet.size());
+		
+		System.out.printf("Class = %s\t| row = 55 | tickerThreadS.size() = %s | Все потоки с-join-нены и работают ...\n\n", this.getClass().getSimpleName(), futureSet.size());
 		// TODO Если будет Callable, то здесь нужно будет сложить в this.allTickersMap все значения OneTickerRunnable.
 	}// End of constructors
 		// Methods
