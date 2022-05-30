@@ -1,0 +1,16 @@
+eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
+encoding//src/main/java/investments/Bolt=UTF-8
+encoding//src/main/java/investments/Bolt/AllTickersAgregator.java=UTF-8
+encoding//src/main/java/investments/Bolt/DBCredentials.java=UTF-8
+encoding//src/main/java/investments/Bolt/DB_Credentials.java=UTF-8
+encoding//src/main/java/investments/Bolt/GetYahooPrices.java=UTF-8
+encoding//src/main/java/investments/Bolt/JsonFromUrl.java=UTF-8
+encoding//src/main/java/investments/Bolt/MockTestClass.java=UTF-8
+encoding//src/main/java/investments/Bolt/OneDay1TickerPrices.java=UTF-8
+encoding//src/main/java/investments/Bolt/OneTickerFetcher.java=UTF-8
+encoding//src/main/java/investments/Bolt/OneTickerParser.java=UTF-8
+encoding//src/main/java/investments/Bolt/OneTickerRunnable.java=UTF-8
+encoding//src/main/java/investments/Bolt/PriceRecord.java=UTF-8
+encoding//src/main/java/investments/Bolt/TickerChooser.java=UTF-8
+encoding/<project>=UTF-8
