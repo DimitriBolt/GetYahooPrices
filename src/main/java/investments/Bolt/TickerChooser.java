@@ -12,12 +12,12 @@ public class TickerChooser {
 	@SuppressWarnings("serial")
 	private ArrayList<String> tickerS = new ArrayList<String>() {
 		{
-			add("SPY");
+//			add("SPY");
 		}
 	};
 	// Initializer block
 	{
-		tickerS.add("%5EDJI");
+//		tickerS.add("%5EDJI");
 //		tickerS.add("GC=F");
 	}
 
@@ -59,7 +59,7 @@ public class TickerChooser {
 //		this.iFile = "THNK.V";
 
 //		tickerS.add("CL=F");
-		tickerS.add("TSLA");
+//		tickerS.add("TSLA");
 //		tickerS.add(this.iFile);
 	}
 

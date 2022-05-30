@@ -34,12 +34,12 @@ public class GetYahooPrices {
 		System.out.printf("Main: Получили %s тиккеров из файла %s\n", tickerS.size(), iFile);
 
 		// allTickersAgregator хранит в себе словарь списков с ценами. На входе получает список тикеров tickers
-		AllTickersAgregator allTickersAgregator = new AllTickersAgregator(tickerS);
+		AllTickersAgregator allTickersAgregator = new AllTickersAgregator(tickerS, dbTableName);
 		SortedMap<String, OneTickerParser> allTickersMap = new TreeMap<String, OneTickerParser>();
 		allTickersMap = allTickersAgregator.getAllPrices();
 //		System.out.printf("Main: Получили словарь со всеми данными = %s\n\n", allTickersMap);
 
-		insertToDB2(allTickersMap, dbTableName);
+//		insertToDB2(allTickersMap, dbTableName);
 	}
 
 	static void insertToDB2(SortedMap<String, OneTickerParser> allTickersMap, String dbTableName) {
@@ -47,7 +47,7 @@ public class GetYahooPrices {
 		String exstingDBTableName = (new IsDBTableExists(dbTableName)).exstingDBTableName;
 
 		int i1 = allTickersMap.keySet().size();
-		System.out.printf("Class = %s | row = 47 | allTickersMap.size() = %s\n\n", "Main\t", i1);
+		System.out.printf("Class = %s\t| row = 47 | allTickersMap.size() = %s\n\n", "Main\t", i1);
 
 		try {
 			// http://it.kgsu.ru/JA_OS/ja_os125.html
@@ -69,29 +69,34 @@ public class GetYahooPrices {
 				long durationStringComposung;
 				long durationSqlInsert;
 				for (Map.Entry<String, OneTickerParser> entry : allTickersMap.entrySet()) {
-					// Цикл по тиккерам.
+					// Цикл по тикерам.
 					System.out.printf("\rТиккер: %7s, будет добавлен в таблицу %s.\t №: %4d", entry.getKey(), exstingDBTableName, iTickers++);
 					try {
 						entry.getValue().getTimeStampJsonArray().size(); // Просто проверка!!!
 						long startStringComposing = System.nanoTime();
 						// https://chartio.com/resources/tutorials/how-to-insert-if-row-does-not-exist-upsert-in-mysql/
 						String sqlCommand = String.format(Locale.US,
-								"INSERT %1$s(ticker, dealTime, volume, openPrice, high, low, closePrice, adjClose) VALUES ('%2$s', %3$d, %4$s, %5$s, %6$s, %7$s, %8$s, %9$s)", // Сформировано начало
-																																												// строки
-								exstingDBTableName, entry.getKey(), // Текстовое значение тикера. Остальные поля - численные.
-								entry.getValue().getTimeStampJsonArray().get(0).getAsInt(), entry.getValue().getVolumeJsonArray().get(0), entry.getValue().getOpenJsonArray().get(0), // Первый элемент
-																																														// массива
-																																														// getOpenJsonArray
+								"INSERT %1$s(ticker, dealTime, volume, openPrice, high, low, closePrice, adjClose) VALUES ('%2$s', %3$d, %4$s, %5$s, %6$s, %7$s, %8$s, %9$s)", // Сформировано начало строки
+								exstingDBTableName,
+								entry.getKey(), // Текстовое значение тикера. Остальные поля - численные.
+								entry.getValue().getTimeStampJsonArray().get(0).getAsInt(),
+								entry.getValue().getVolumeJsonArray().get(0),
+								entry.getValue().getOpenJsonArray().get(0), // Первый элемент массива getOpenJsonArray
 								entry.getValue().getHighJsonArray().get(0), //
 								entry.getValue().getLowJsonArray().get(0), // Первый элемент массива с ценами Low
-								entry.getValue().getCloseJsonArray().get(0), entry.getValue().getAdjCloseJsonArray().get(0)); // Если нет adjClose, то не возможно взять 0-й элемент массива.
+								entry.getValue().getCloseJsonArray().get(0),
+								entry.getValue().getAdjCloseJsonArray().get(0)); // Если нет adjClose, то не возможно взять 0-й элемент массива.
 
 						for (int i = 1; i < entry.getValue().getTimeStampJsonArray().size(); i++) {
 							// Цикл по TimeStamp'ам. Дополняю строку.
 							sqlCommand = sqlCommand + String.format(Locale.US, ", ('%1$s', %2$d, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s)", // Довесок строки
-									entry.getKey(), // Текстовое значение тиккера. Остальные поля - численные.
-									entry.getValue().getTimeStampJsonArray().get(i).getAsInt(), entry.getValue().getVolumeJsonArray().get(i), entry.getValue().getOpenJsonArray().get(i),
-									entry.getValue().getHighJsonArray().get(i), entry.getValue().getLowJsonArray().get(i), entry.getValue().getCloseJsonArray().get(i),
+									entry.getKey(), // Текстовое значение тикера. Остальные поля - численные.
+									entry.getValue().getTimeStampJsonArray().get(i).getAsInt(),
+									entry.getValue().getVolumeJsonArray().get(i),
+									entry.getValue().getOpenJsonArray().get(i),
+									entry.getValue().getHighJsonArray().get(i),
+									entry.getValue().getLowJsonArray().get(i),
+									entry.getValue().getCloseJsonArray().get(i),
 									entry.getValue().getAdjCloseJsonArray().get(i)); // Если нет adjClose, то не возможно взять i-й элемент массива.
 						}
 						durationStringComposung = System.nanoTime() - startStringComposing;

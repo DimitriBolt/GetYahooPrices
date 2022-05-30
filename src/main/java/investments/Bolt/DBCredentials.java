@@ -1,6 +1,3 @@
-/**
- * 
- */
 package investments.Bolt;
 
 import java.io.File;
@@ -8,16 +5,12 @@ import java.io.IOException;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
 
-
-/**
- * @author dimitri
- *
- */
 class DBCredentials {
 	// static Class variables
 	// private Instance variable
 	private String mySqlUrlConnection;
-	// Initialiser block
+
+	// Initializer block
 	// Constructors
 	DBCredentials(File iniFile) throws InvalidFileFormatException, IOException {
 		// TODO нужно использовать .properties https://metanit.com/java/database/1.1.php
@@ -26,16 +19,12 @@ class DBCredentials {
 	}
 
 	// Methods
-
 	// Mutator (= setter) methods
 	// Accessor (= getter) methods
 	String getInstanceVariable() {
 		return "this.InstanceVariable";
 	}
 
-	/**
-	 * @return the mySqlUrlConnection
-	 */
 	public String getMySqlUrlConnection() {
 		return this.mySqlUrlConnection;
 	}

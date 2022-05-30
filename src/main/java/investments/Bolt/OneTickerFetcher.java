@@ -14,6 +14,7 @@ public class OneTickerFetcher {
 	// Initializer block
 	// Constructors
 	public OneTickerFetcher(String ticker, String frequency) {
+		
 		// https://stackoverflow.com/questions/44030983/yahoo-finance-url-not-working/47505102#47505102
 		String strJsonUrl = String.format(YAHOO_QUOTE_URL_FMT, ticker, frequency);
 		this.strJsonUrl = strJsonUrl; // Только для анализа исключения ClassCastException в вышестоящем классе
@@ -26,6 +27,14 @@ public class OneTickerFetcher {
 			e.printStackTrace();
 		}
 		// http://it.kgsu.ru/JA_OS/ja_os145.html
+		// -----------------------------
+		if (false) {
+			try {
+				JsonFromUrl jsonFromUrlTest = new JsonFromUrl("https://postman-echo.com/get");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	// Methods
