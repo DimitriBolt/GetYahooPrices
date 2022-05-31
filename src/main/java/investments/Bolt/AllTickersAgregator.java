@@ -17,39 +17,42 @@ public class AllTickersAgregator {
 	// Initializer block
 	// private Instance variable
 	private SortedMap<String, OneTickerParser> allTickersMap = new TreeMap<String, OneTickerParser>();
-	private String dbTableName;
-
 	// Initializer block
 	// Constructors
 	AllTickersAgregator(Set<String> tickerS, String dbTableName) throws IOException {
-		// Этот класс служит только для управления потоками.
-		this.dbTableName = dbTableName;
-		{// TODO сделать TRUNCATE `yahoo_prices`.`prices`; как временное решение.
-			DataBase.trancateTable(dbTableName);
-		}
+		DataBase.trancateTable(dbTableName);
 		int iTickers = 1;
 		Set<Future> futureSet = new HashSet<Future>(); // сюда надо складывать потоки.
 		System.out.printf("Class = %s\t| row = 26 | tickerS.size() = %s\n\n", this.getClass().getSimpleName(), tickerS.size());
 		// ExecutorService: https://habr.com/ru/post/260953/
-		ExecutorService executorService = Executors.newCachedThreadPool();
+		ExecutorService executorService = Executors.newCachedThreadPool(); // Плохое временное решение, чтобы не разбираться с DeadLock.
 
 		for (String ticker : tickerS) {
 			// Запускаем 3000 потоков
-			// TODO Более логично OneTickerRunnable сделать Callable и в конце складывать складывать в this.allTickersMap
-			OneTickerRunnable oneTickerRunnable = new OneTickerRunnable(ticker, iTickers++, this.allTickersMap, this.dbTableName); // Runnable
+			OneTickerRunnable oneTickerRunnable = new OneTickerRunnable(ticker, iTickers++, this.allTickersMap, dbTableName); // Runnable
 			Future<?> future = executorService.submit(oneTickerRunnable);
 			futureSet.add(future);
+//			System.out.printf("%s ", ticker);
 		}
+		System.out.printf("\rвсе потоки стартавали\n", 1);
 		// ☝ Все потоки запустились ☝ и начали успешно работать.
+		
 		for (Future<?> future : futureSet) {
 			try {
-				future.get(2, TimeUnit.MINUTES);
+				future.get(1, TimeUnit.MINUTES);
 			} catch (InterruptedException | ExecutionException | TimeoutException e) {
 				// Слава богу здесь срабатывает java.util.concurrent.TimeoutException
 				// TODO но нужно понять, почему он срабатывает и как с этим бороться.
-				System.out.printf("Class = %s \t| Row = 47  | %s \t\t| %s\n", this.getClass().getSimpleName(), e.getClass().getSimpleName(), e.getCause());
+				System.out.printf("Class = %1s \t| Row = 44  | %2s \t\t| %3s \t| isDone = %4s \t| isCancelled = %5s \t| %6s\n",
+						this.getClass().getSimpleName(),
+						e.getClass().getSimpleName(),
+						e.getCause(),
+						future.isDone(),
+						future.isCancelled(),
+						future.toString());
+				future.cancel(true);
 			}
-		} // Тут все объединилось и, видимо, пока все не выполнился, дальше не идет.
+		} // Тут все объединилось и, видимо?, пока все не выполнился, дальше не идет.
 		executorService.shutdown();
 
 		// TODO Это блок, судя по всему никогда не выполняется. Нужно его полностью переработать.
@@ -60,15 +63,8 @@ public class AllTickersAgregator {
 			e.printStackTrace();
 		}
 
-		System.out.printf("Class = %s\t| row = 55 | tickerThreadS.size() = %s | Все потоки с-join-нены и работают ...\n\n", this.getClass().getSimpleName(), futureSet.size());
-		// TODO Если будет Callable, то здесь нужно будет сложить в this.allTickersMap все значения OneTickerRunnable.
 	}// End of constructors
 		// Methods
 		// Accessor (= getter) methods
 
-	SortedMap<String, OneTickerParser> getAllPrices() {
-		// TODO Это не нужно будет.
-		System.out.printf("Class = %s\t| row = 64 | this.allTickersMap.size() = %s | Все цены получены, все потоки завершились.\n\n", this.getClass().getSimpleName(), this.allTickersMap.size());
-		return this.allTickersMap;
-	}
 }
