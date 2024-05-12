@@ -43,15 +43,16 @@ public class TickerChooser {
 			bufferedReader.readLine(); // this will read the first line => skip first line
 			while ((line = bufferedReader.readLine()) != null) {
 				scanner = new Scanner(line);
-				scanner.useDelimiter("\t");
+				scanner.useDelimiter(",");
 				index = 0;
 				while (scanner.hasNext()) {
 					String data = scanner.next();
-					if (index == 1)
+					if (index == 0)
 						tickerS.add(data);
 					index++;
 				}
 			}
+			var dummyVar =0;
 		} catch (IOException ex) {
 			System.out.println(ex.getMessage());
 		}

@@ -104,12 +104,18 @@ class DataBase {
 		// https://metanit.com/java/database/1.1.php
 		// https://habr.com/ru/post/501756/
 		String mysqlUrlConnection = (new DB_Credentials()).getProperty("mySqlUrlConnection");
+		// TODO Заглушка!!
+		mysqlUrlConnection = "jdbc:oracle:thin:@testdb_high?TNS_ADMIN=D:/Distrib/sqldeveloper-23.1.1.345.2114-x64/Wallet_testDB";
 		String exstingDBTableName = (new IsDBTableExists(dbTableName)).exstingDBTableName;
 		Connection connection = null;
 		try {
-			connection = DriverManager.getConnection(mysqlUrlConnection);
+			// connection = DriverManager.getConnection(mysqlUrlConnection);
+			connection = DriverManager.getConnection(mysqlUrlConnection, "ADMIN", "Db123456!@#$%^");
+			
 			connection.setAutoCommit(false);
-			String sqlCommand = String.format("TRUNCATE %s;", exstingDBTableName);
+			String sqlCommand = String.format("TRUNCATE TABLE ADMIN.%s drop STORAGE;", exstingDBTableName);
+			
+			/*
 			PreparedStatement pstmt = connection.prepareStatement(sqlCommand);
 			{
 				// setString(1, exstingDBTableName);
@@ -117,6 +123,10 @@ class DataBase {
 			}
 			int[] result = pstmt.executeBatch();
 			pstmt.close();
+			*/
+			
+			
+			
 			connection.close(); // В данном случае нужно обязательно!
 		} catch (Exception e) {
 			e.printStackTrace();

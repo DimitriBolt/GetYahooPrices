@@ -18,6 +18,84 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.27</version>
 		</dependency>
+		
+		
+		
+		<!-- https://www.oracle.com/database/technologies/maven-central-guide.html -->
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc11-production -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc11-production</artifactId>
+            <version>23.4.0.24.05</version>
+            <type>pom</type>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc11 -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc11</artifactId>
+            <version>23.4.0.24.05</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ucp -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ucp</artifactId>
+            <version>23.4.0.24.05</version>
+        </dependency>
+
+
+        <!-- For Oracle Wallet, get the oraclepki, osdt_core and osdt_cert artifacts; these are not needed for JKS -->
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.security/oraclepki -->
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>oraclepki</artifactId>
+            <version>23.4.0.24.05</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.security/osdt_core -->
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>osdt_core</artifactId>
+            <version>21.13.0.0</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.security/osdt_cert -->
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>osdt_cert</artifactId>
+            <version>21.13.0.0</version>
+        </dependency>
+
+
+        <!-- ATP-D furnishes built-in high availability, you also need to get the ons and oraclepki artifacts for the HA events notification (even if you are using Java KeyStore) -->
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.ha/ons -->
+        <dependency>
+            <groupId>com.oracle.database.ha</groupId>
+            <artifactId>ons</artifactId>
+            <version>23.4.0.24.05</version>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>com.oracle.database.security</groupId>
+            <artifactId>oraclepki</artifactId>
+        </dependency>
+        -->
+
+        <!-- If you are not using the Oracle Java connection pool (UCP) or Weblogic Active GrigLink, you would also need to pull the simplefan artifact for the HA events APIs -->
+        <!-- https://mvnrepository.com/artifact/com.oracle.database.ha/simplefan -->
+        <dependency>
+            <groupId>com.oracle.database.ha</groupId>
+            <artifactId>simplefan</artifactId>
+            <version>23.4.0.24.05</version>
+        </dependency>
+		
+		
+		
 
 		<!-- https://mvnrepository.com/artifact/org.ini4j/ini4j -->
 		<dependency>
