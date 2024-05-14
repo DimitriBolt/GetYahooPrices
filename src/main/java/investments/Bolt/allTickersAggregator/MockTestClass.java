@@ -1,4 +1,4 @@
-package investments.Bolt;
+package investments.Bolt.allTickersAggregator;
 
 public class MockTestClass {
 	// static Class variables

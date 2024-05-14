@@ -1,4 +1,4 @@
-package investments.Bolt;
+package investments.Bolt.allTickersAggregator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +23,7 @@ class DB_Credentials {
 	DB_Credentials() {
 
 		String userHomePath = System.getProperty("user.home");
-		Path path = Paths.get(userHomePath, "Documents", "DB_Credentials.properties");
+		Path path = Paths.get(userHomePath, "Documents", "OracleCredentials.properties");
 		try (InputStream in = Files.newInputStream(path)) {
 			//Суть. 
 			this.props.load(in);

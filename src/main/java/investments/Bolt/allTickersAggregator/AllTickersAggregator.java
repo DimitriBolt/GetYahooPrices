@@ -1,4 +1,4 @@
-package investments.Bolt;
+package investments.Bolt.allTickersAggregator;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -12,15 +12,15 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class AllTickersAgregator {
+public class AllTickersAggregator {
 	// class variables
 	// Initializer block
 	// private Instance variable
 	private SortedMap<String, OneTickerParser> allTickersMap = new TreeMap<String, OneTickerParser>();
 	// Initializer block
 	// Constructors
-	AllTickersAgregator(Set<String> tickerS, String dbTableName) throws IOException {
-		DataBase.trancateTable(dbTableName);
+    public AllTickersAggregator(Set<String> tickerS, String dbTableName) throws IOException {
+		DataBase.truncateTable(dbTableName);
 		int iTickers = 1;
 		Set<Future> futureSet = new HashSet<Future>(); // сюда надо складывать потоки.
 		System.out.printf("Class = %s\t| row = 26 | tickerS.size() = %s\n\n", this.getClass().getSimpleName(), tickerS.size());
@@ -29,6 +29,7 @@ public class AllTickersAgregator {
 
 		for (String ticker : tickerS) {
 			// Запускаем 3000 потоков
+			// Непонятно зачем потоку по одному тикеру иметь Map всх тиккеров?
 			OneTickerRunnable oneTickerRunnable = new OneTickerRunnable(ticker, iTickers++, this.allTickersMap, dbTableName); // Runnable
 			Future<?> future = executorService.submit(oneTickerRunnable);
 			futureSet.add(future);

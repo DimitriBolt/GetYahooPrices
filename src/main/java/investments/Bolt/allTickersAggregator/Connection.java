@@ -1,4 +1,4 @@
-package investments.Bolt;
+package investments.Bolt.allTickersAggregator;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

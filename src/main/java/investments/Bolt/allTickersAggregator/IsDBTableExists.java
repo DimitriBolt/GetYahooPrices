@@ -1,7 +1,7 @@
 /**
  * 
  */
-package investments.Bolt;
+package investments.Bolt.allTickersAggregator;
 
 class IsDBTableExists {
 	// static Class variables

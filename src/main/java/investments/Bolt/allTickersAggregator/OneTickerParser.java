@@ -1,4 +1,4 @@
-package investments.Bolt;
+package investments.Bolt.allTickersAggregator;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
