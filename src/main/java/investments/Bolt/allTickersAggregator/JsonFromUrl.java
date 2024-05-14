@@ -20,6 +20,7 @@ class JsonFromUrl {
     // private Instance variable
     private JsonElement jsonElement;
     private boolean hangState = false; // По умолчанию зависания нет и повторов нет.
+    String responseMessage;
 
     // Initializer block
     // Constructors
@@ -29,13 +30,13 @@ class JsonFromUrl {
         int i = 1; // Счетчик попыток соединения.
         do {
             HttpURLConnection connection = (new Connection(urlString)).connection;
-
 //			java.util.Map<String, List<String>> requestProperties = connection.getRequestProperties(); // Это просто для экспериментов для подражания browser.
             try {
                 connection.connect();
 //				requestProperties = connection.getRequestProperties(); // Это просто для экспериментов для подражания browser.
                 if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    // Этот блок случается, когда тикер не найден?
+                    // Соединение есть, но данных нет, например тикер "Not Found".
+                    responseMessage = connection.getResponseMessage();
                     System.out.printf("Class = %1$s\t\t\t| row = 39 | getResponseMessage() = %2$s\t| Попытка соединения = %3$s\t| strJsonUrl = %4$s%n", this.getClass().getSimpleName(), connection.getResponseMessage(), i, urlString);
 //					this.jsonElement = null;
                     this.hangState = true; // В реальности нет зависания, просто используем туже переменную статуса. Идём на повтор.
@@ -55,15 +56,17 @@ class JsonFromUrl {
                     this.hangState = false;
                 }
             } catch (SocketTimeoutException | ConnectException socketTimeoutException) {
+                // Соединения нет
                 // Повисли....
                 this.hangState = true; // Идём на повтор
                 try {
-                    int slieepTime = (new Random()).nextInt(10) + 15;
+                    int slieepTime = (new Random()).nextInt(2000) + 1000;
                     Thread.sleep(slieepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             } catch (Exception ex) {
+                // Соединения нет
                 ex.printStackTrace();
                 this.hangState = true; // Идём на повтор
                 System.out.printf("Class = %s\t\t| row = 68 | %s\t\t\t| Попытка соединения = %s| strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
@@ -72,8 +75,7 @@ class JsonFromUrl {
             }
 
             // Проверки условий не пора ли выходить из цикла.
-			boolean b = Objects.equals(connection.getResponseMessage(), "Not Found"); // Ненужная строка. Нужна была только для отладки, чтобы ловить несуществующие тиккеры.
-            if ((i++ >= 6 || Objects.equals(connection.getResponseMessage(), "Not Found")) & this.hangState) {
+            if ((i++ >= 6 || Objects.equals(responseMessage, "Not Found")) & this.hangState) {
                 // После 6-ти попыток хорошо бы поднимать статус наверх. ??
                 System.out.printf("Class = %s\t\t\t| row = 78 | После %s попыток ticker dropped! \t\t\t\t\t\t\t\t| strJsonUrl = %s%n", this.getClass().getSimpleName(), i - 1, urlString);
                 this.hangState = false; // Принудительный выход из цикла попыток соединения.

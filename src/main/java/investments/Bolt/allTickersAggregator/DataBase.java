@@ -107,14 +107,14 @@ class DataBase {
                 hangState = false; // Всё в порядке, продолжать попытки не нужно.
             } catch (SQLRecoverableException exception) {
                 System.out.println("Жопа началась");
-                // exception.printStackTrace();
+                // exception.printStackTrace(System.out);
                 hangState = true; // Идём на повтор
-                System.out.println("Жопа случилась. Идём на повтор.");
-                int sleepTime = (new Random()).nextInt(6000) + 3000;
+                int sleepTime = (new Random()).nextInt(4000) + 3000;
+                System.out.printf("Жопа случилась. Идём на повтор после паузы в %1$d миллисекунд\n", sleepTime);
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    // Не сработает никогда
                 }
             } catch (SQLException exception) {
                 System.out.println("Какая-то другая жопа с БД");

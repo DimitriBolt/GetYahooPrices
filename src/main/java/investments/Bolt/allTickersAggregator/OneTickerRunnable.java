@@ -55,7 +55,7 @@ public class OneTickerRunnable implements Runnable {
 		} catch (NullPointerException ex) {
 			// Это случается, если я в JsonFromUrl выставил jsonElement = null и нечего parse-ить, а фактически это значит, что тиккер умер.
 //			System.out.println(ex);
-			System.out.printf("Class = %s\t| Row = 58 | %s \t\t\t\t\t\t\t\t\t\t\t| strJsonUrl = %s\n\n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), oneTickerFetcher.getStrJsonUrl());
+			System.out.printf("Class = %s\t| Row = 58 | %s \t\t\t\t\t\t\t\t\t\t\t| strJsonUrl = %s\n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), oneTickerFetcher.getStrJsonUrl());
 		} catch (ClassCastException ex) {
 			System.out.printf("\t%s\t => strJsonUrl = %s%n", this.getClass().getName(), oneTickerFetcher.getStrJsonUrl());
 			System.out.println(ex);
