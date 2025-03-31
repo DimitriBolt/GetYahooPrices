@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GetYahooPrices {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException { // Здесь уже можно ставить Breakpoint: Ctrl+8
 
 		// tickerChooser хранит в себе список tickers.
 		// https://www.nasdaq.com/market-activity/stocks/screener
