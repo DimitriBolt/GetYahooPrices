@@ -30,12 +30,13 @@ public class AllTickersAggregator {
 		for (String ticker : tickerS) {
 			// Запускаем 3000 потоков
 			// Непонятно зачем потоку по одному тикеру иметь Map всх тиккеров?
+			// !! Для отладки нужно влезать внутрь потока и смотреть, что там происходит. Для этого нужно поставить Break pont внутри !!
 			OneTickerRunnable oneTickerRunnable = new OneTickerRunnable(ticker, iTickers++, this.allTickersMap, dbTableName); // Runnable
 			Future<?> future = executorService.submit(oneTickerRunnable);
 			futureSet.add(future);
 //			System.out.printf("%s ", ticker);
 		}
-		System.out.printf("\rвсе потоки стартавали\n", 1);
+		System.out.printf("\rвсе потоки Создались и готовы к запуску\n", 1);
 		// ☝ Все потоки запустились ☝ и начали успешно работать.
 		
 		for (Future<?> future : futureSet) {

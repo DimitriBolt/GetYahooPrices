@@ -17,9 +17,9 @@ public class GetYahooPrices {
 			iFile = new File(args[0]);
 		} else {
 			String userHomePath = System.getProperty("user.home");
-			iFile = new File(userHomePath, "/Downloads/pricing/ifile.txt");
+			iFile = new File(userHomePath, "Downloads/pricing/ifile.txt");
 		}
-		String dbTableName = args.length >= 1 ? args[1] : "prices";
+		String dbTableName = args.length >= 2 ? args[1] : "prices";
 
 		// Получаем список тикеров.
 		TickerChooser tickerChooser;

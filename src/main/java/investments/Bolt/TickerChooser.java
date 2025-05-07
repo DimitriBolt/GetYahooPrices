@@ -17,8 +17,12 @@ public class TickerChooser {
 	};
 	// Initializer block
 	{
-//		tickerS.add("%5EDJI");
-//		tickerS.add("GC=F");
+		tickerS.add("%5EDJI");
+		tickerS.add("%5E" +"GSPC");
+		tickerS.add("GC=F");
+		tickerS.add("CL=F");
+		tickerS.add("KE=F");
+
 	}
 
 	// Create a class constructors for the TickerChooser class
@@ -47,7 +51,7 @@ public class TickerChooser {
 				index = 0;
 				while (scanner.hasNext()) {
 					String data = scanner.next();
-					if (index == 0)
+					if (index == 0) // Потому-что первый столбец
 						tickerS.add(data);
 					index++;
 				}

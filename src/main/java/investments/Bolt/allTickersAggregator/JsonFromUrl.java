@@ -12,6 +12,7 @@ import com.google.gson.JsonParser;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -30,10 +31,12 @@ class JsonFromUrl {
         int i = 1; // Счетчик попыток соединения.
         do {
             HttpURLConnection connection = (new Connection(urlString)).connection;
-//			java.util.Map<String, List<String>> requestProperties = connection.getRequestProperties(); // Это просто для экспериментов для подражания browser.
+            //!!! Очень важно периодически менять browser-agent, иначе Yahoo блокирует соединение.!!!!
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
+			java.util.Map<String, List<String>> requestProperties = connection.getRequestProperties(); // Это просто для экспериментов для подражания browser.
             try {
+                // requestProperties = connection.getRequestProperties(); // Это просто для экспериментов для подражания browser.
                 connection.connect();
-//				requestProperties = connection.getRequestProperties(); // Это просто для экспериментов для подражания browser.
                 if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                     // Соединение есть, но данных нет, например тикер "Not Found".
                     responseMessage = connection.getResponseMessage();
@@ -72,6 +75,7 @@ class JsonFromUrl {
                 System.out.printf("Class = %s\t\t| row = 68 | %s\t\t\t| Попытка соединения = %s| strJsonUrl = %s%n", this.getClass().getSimpleName(), ex.getClass().getSimpleName(), i, urlString);
             } finally {
                 connection.disconnect();
+                requestProperties = connection.getRequestProperties(); // Это просто для экспериментов для подражания browser.
             }
 
             // Проверки условий не пора ли выходить из цикла.
