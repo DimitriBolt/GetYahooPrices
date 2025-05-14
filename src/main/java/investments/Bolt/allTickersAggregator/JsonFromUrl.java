@@ -31,7 +31,7 @@ class JsonFromUrl {
         int i = 1; // Счетчик попыток соединения.
         do {
             HttpURLConnection connection = (new Connection(urlString)).connection;
-            //!!! Очень важно периодически менять browser-agent, иначе Yahoo блокирует соединение.!!!!
+            // !!! Очень важно периодически менять browser-agent, иначе Yahoo блокирует соединение.!!!!
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
 			java.util.Map<String, List<String>> requestProperties = connection.getRequestProperties(); // Это просто для экспериментов для подражания browser.
             try {

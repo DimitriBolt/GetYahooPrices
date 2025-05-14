@@ -17,23 +17,23 @@ public class TickerChooser {
 	};
 	// Initializer block
 	{
-		tickerS.add("%5EDJI");
-		tickerS.add("%5E" +"GSPC");
-		tickerS.add("GC=F");
-		tickerS.add("CL=F");
-		tickerS.add("KE=F");
+//		tickerS.add("%5EDJI");
+//		tickerS.add("%5E" +"GSPC");
+//		tickerS.add("GC=F");
+//		tickerS.add("CL=F");
+//		tickerS.add("KE=F");
 
 	}
 
 	// Create a class constructors for the TickerChooser class
 	TickerChooser() {
-		tickerS.add("CL=F");
-		tickerS.add("NEBLQ");
-		tickerS.add("BR");
-		tickerS.add("BAX");
-		tickerS.add("SMCI");
-		tickerS.add("UVV");
-		tickerS.add("GTT");
+//		tickerS.add("CL=F");
+//		tickerS.add("NEBLQ");
+//		tickerS.add("BR");
+//		tickerS.add("BAX");
+//		tickerS.add("SMCI");
+//		tickerS.add("UVV");
+//		tickerS.add("GTT");
 
 	}
 
